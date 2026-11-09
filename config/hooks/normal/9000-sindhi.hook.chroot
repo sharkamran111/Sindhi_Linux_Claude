@@ -19,6 +19,23 @@ update-alternatives --install /usr/share/images/desktop-base/desktop-background 
   desktop-background /usr/share/backgrounds/sindhi/wallpaper.png 100
 update-alternatives --set desktop-background /usr/share/backgrounds/sindhi/wallpaper.png
 
+# 3b. XFCE ships its own default wallpaper, replace those too
+for img in /usr/share/backgrounds/xfce/*; do
+  [ -f "$img" ] || continue
+  dpkg-divert --quiet --local --rename --add "$img"
+  case "$img" in
+    *.svg) cp /usr/share/backgrounds/sindhi/wallpaper.svg "$img" ;;
+    *)     cp /usr/share/backgrounds/sindhi/wallpaper.png "$img" ;;
+  esac
+done
+
+# 3c. Installer icon on the desktop
+for f in $(grep -rl "Install Debian" /usr/share/applications 2>/dev/null); do
+  sed -i -e '/^Name\[/d' -e '/^GenericName\[/d' -e '/^Comment\[/d' \
+    -e 's/^Name=.*/Name=Install Sindhi Linux/' \
+    -e 's/^Icon=.*/Icon=\/usr\/share\/pixmaps\/sindhi-linux.png/' "$f"
+done
+
 # 4. System name
 for f in /usr/lib/os-release /etc/os-release; do
   [ -f "$f" ] && [ ! -L "$f" ] || continue

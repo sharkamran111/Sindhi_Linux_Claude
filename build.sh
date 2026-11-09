@@ -20,6 +20,17 @@ lb config \
   --updates true \
   --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhi-linux keyboard-layouts=us,pk keyboard-variants=,snd keyboard-options=grp:alt_shift_toggle"
 
+# Boot menu branding: start from live-build's own templates, then swap in
+# the Sindhi Linux background and names.
+mkdir -p config/bootloaders
+for dir in /usr/share/live/build/bootloaders/*; do
+  name=$(basename "$dir")
+  [ -d "config/bootloaders/$name" ] || cp -r "$dir" "config/bootloaders/$name"
+done
+find config/bootloaders -name 'splash.svg*' -exec cp branding/bootmenu.svg {} \;
+find config/bootloaders -name 'splash.png' -exec cp branding/bootmenu.png {} \;
+grep -rlI 'Live system' config/bootloaders | xargs -r sed -i 's/Live system/Sindhi Linux/g'
+
 lb build
 
 ls -lh ./*.iso
