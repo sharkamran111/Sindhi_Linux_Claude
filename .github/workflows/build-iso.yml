@@ -36,3 +36,47 @@ jobs:
           path: "*.iso"
           retention-days: 14
           compression-level: 0
+
+  boot-test:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Install QEMU
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 imagemagick socat
+
+      - name: Get the ISO
+        uses: actions/download-artifact@v4
+        with:
+          name: sindhi-linux-iso
+
+      - name: Boot it and take screenshots
+        run: |
+          ISO=$(ls *.iso | head -1)
+          mkdir -p shots
+          qemu-system-x86_64 -enable-kvm -m 2048 -smp 2 -cdrom "$ISO" -boot d \
+            -vga std -display none -monitor unix:/tmp/qmp.sock,server,nowait &
+          snap() { sleep "$1"; echo "screendump /tmp/s.ppm" | socat - UNIX-CONNECT:/tmp/qmp.sock >/dev/null; sleep 1; convert /tmp/s.ppm "shots/$2.png"; echo "took $2"; }
+          snap 8 01-boot-menu
+          echo "sendkey ret" | socat - UNIX-CONNECT:/tmp/qmp.sock >/dev/null
+          snap 6 02-early-boot
+          snap 6 03-splash
+          snap 10 04-splash-later
+          snap 30 05-after-boot
+          snap 40 06-desktop
+          snap 60 07-desktop-later
+          echo "quit" | socat - UNIX-CONNECT:/tmp/qmp.sock >/dev/null || true
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: boot-screenshots
+          path: shots/
