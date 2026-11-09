@@ -1,0 +1,26 @@
+#!/bin/sh
+# Sindhi Linux setup, runs inside the image while it is being built.
+set -e
+
+# 1. Languages: English, Sindhi (Arabic script) and Urdu
+for loc in "en_US.UTF-8 UTF-8" "sd_IN UTF-8" "ur_PK UTF-8"; do
+  sed -i "s/^# *${loc}/${loc}/" /etc/locale.gen
+  grep -q "^${loc}" /etc/locale.gen || echo "${loc}" >> /etc/locale.gen
+done
+locale-gen
+update-locale LANG=en_US.UTF-8
+
+# 2. Boot splash: ajrak logo with the Sindhi welcome
+plymouth-set-default-theme sindhi
+update-initramfs -u -k all
+
+# 3. Desktop wallpaper
+update-alternatives --install /usr/share/images/desktop-base/desktop-background \
+  desktop-background /usr/share/backgrounds/sindhi/wallpaper.png 100
+update-alternatives --set desktop-background /usr/share/backgrounds/sindhi/wallpaper.png
+
+# 4. System name
+for f in /usr/lib/os-release /etc/os-release; do
+  [ -f "$f" ] && [ ! -L "$f" ] || continue
+  sed -i 's/^PRETTY_NAME=.*/PRETTY_NAME="Sindhi Linux (Debian 13 base)"/' "$f"
+done

@@ -1,0 +1,62 @@
+# Live system
+live-boot
+live-config
+live-config-systemd
+
+# Light desktop (XFCE) and login screen
+xserver-xorg
+xfce4
+xfce4-terminal
+xfce4-taskmanager
+xfce4-screenshooter
+xfce4-xkb-plugin
+xfce4-power-manager
+thunar
+mousepad
+ristretto
+lightdm
+lightdm-gtk-greeter
+desktop-base
+greybird-gtk-theme
+
+# Boot splash
+plymouth
+plymouth-themes
+
+# Admin: sudo, su (util-linux), terminal tools
+sudo
+bash-completion
+nano
+htop
+
+# Network
+network-manager
+network-manager-gnome
+
+# Sound
+pipewire-audio
+wireplumber
+pavucontrol
+
+# Browser
+firefox-esr
+
+# Sindhi, Urdu and Arabic script support
+locales
+keyboard-configuration
+fonts-sil-lateef
+fonts-sil-scheherazade
+fonts-noto-core
+fonts-dejavu
+
+# Common laptop firmware (wifi, graphics)
+firmware-linux-free
+firmware-misc-nonfree
+firmware-iwlwifi
+firmware-realtek
+firmware-atheros
+firmware-amd-graphics
+
+# Installer (asks for your username and password)
+calamares
+calamares-settings-debian
