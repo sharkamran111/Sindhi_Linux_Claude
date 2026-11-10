@@ -1,6 +1,11 @@
 #!/bin/sh
 # SindhOS ISO build, installed by tools/setup-build-host.sh as
-# /usr/local/sbin/sindhos-build. Runs as root, takes no arguments.
+# /usr/local/sbin/sindhos-build. Runs as root.
+#
+#   sindhos-build            test build (fast zstd squashfs)
+#   sindhos-build --release  release build (xz squashfs)
+#   sindhos-build --clean    remove everything from earlier builds except the
+#                            downloaded package cache, then stop
 #
 # Copies the checkout at @REPO@ into the Debian build chroot @ROOT@, runs
 # ./build.sh there with Debian's live-build, and puts the ISO and the build
@@ -11,6 +16,14 @@ REPO=@REPO@
 ROOT=@ROOT@
 WORK=$ROOT/work
 OUT=$REPO/out
+
+MODE=test
+case "${1:-}" in
+  "") ;;
+  --release) MODE=release ;;
+  --clean) MODE=clean ;;
+  *) echo "usage: sindhos-build [--release|--clean]" >&2; exit 2 ;;
+esac
 
 [ "$(id -u)" = 0 ] || { echo "run with sudo" >&2; exit 1; }
 [ -x "$ROOT/usr/bin/lb" ] || { echo "build chroot missing, run tools/setup-build-host.sh" >&2; exit 1; }
@@ -29,28 +42,60 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-# A crashed earlier build can leave mounts behind; never copy over them.
+# A crashed earlier build can leave mounts behind; never copy or delete over them.
 unmount_below "$WORK"
+
+if [ "$MODE" = clean ]; then
+  # Keep only live-build's downloaded packages (slow to fetch again).
+  if [ -d "$WORK" ]; then
+    find "$WORK" -mindepth 1 -maxdepth 1 ! -name cache -exec rm -rf {} +
+    if [ -d "$WORK/cache" ]; then
+      find "$WORK/cache" -mindepth 1 -maxdepth 1 \
+        ! -name 'packages.*' ! -name 'contents.*' -exec rm -rf {} +
+    fi
+  fi
+  rm -f "$OUT"/*.iso "$OUT"/build-*.log "$OUT"/build.log
+  echo "Cleaned. Kept the package cache:"
+  du -sh "$WORK"/cache/* 2>/dev/null || echo "  (empty)"
+  exit 0
+fi
+
 mkdir -p "$WORK" "$OUT"
 
-# Copy the source (including uncommitted changes). Keep live-build's package
-# cache and its own build dirs; build.sh cleans those itself.
+# eatmydata in the build chroot (older setups don't have it yet)
+cp -L /etc/resolv.conf "$ROOT/etc/resolv.conf"
+if [ ! -e "$ROOT/usr/bin/eatmydata" ]; then
+  echo "Installing eatmydata in the build chroot..."
+  chroot "$ROOT" sh -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y -qq eatmydata' >/dev/null
+fi
+
+# Copy the source (including uncommitted changes). Excluded paths are left
+# alone on the build side: live-build's package cache and build dirs
+# (build.sh cleans those itself).
 rsync -a --delete \
   --exclude=/.git/ --exclude=/out/ --exclude=/shots/ --exclude='*.iso' \
-  --filter='P /cache/' --filter='P /chroot/' --filter='P /binary/' --filter='P /.build/' \
+  --exclude=/cache/ --exclude=/chroot/ --exclude=/binary/ --exclude=/.build/ \
   "$REPO/" "$WORK/"
+# Your local download files (top level of cache/ only, e.g. firmware) go
+# next to live-build's own cache folders, never replacing them.
+mkdir -p "$WORK/cache"
+if [ -d "$REPO/cache" ]; then
+  find "$REPO/cache" -maxdepth 1 -type f -exec cp {} "$WORK/cache/" \;
+fi
 
-cp -L /etc/resolv.conf "$ROOT/etc/resolv.conf"
 mount -t proc proc "$ROOT/proc"
 mount -t sysfs sys "$ROOT/sys"
 mount --bind /dev "$ROOT/dev"
 mount --bind /dev/pts "$ROOT/dev/pts"
 
+BUILD_ARGS=
+[ "$MODE" = release ] && BUILD_ARGS=--release
+
 STAMP=$(date +%Y%m%d-%H%M%S)
 LOG=$OUT/build-$STAMP.log
-echo "Building... log: $LOG"
+echo "Building ($MODE)... log: $LOG"
 start=$(date +%s)
-if chroot "$ROOT" /bin/sh -c 'cd /work && chmod +x build.sh config/hooks/normal/*.hook.chroot && ./build.sh' > "$LOG" 2>&1; then
+if chroot "$ROOT" /bin/sh -c "cd /work && chmod +x build.sh config/hooks/normal/*.hook.chroot && ./build.sh $BUILD_ARGS" > "$LOG" 2>&1; then
   status=0
 else
   status=$?

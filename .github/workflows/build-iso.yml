@@ -20,7 +20,7 @@ jobs:
             live-build debootstrap squashfs-tools xorriso \
             grub-efi-amd64-bin grub-pc-bin mtools dosfstools \
             syslinux syslinux-common isolinux git ca-certificates \
-            librsvg2-bin fonts-sil-lateef fonts-dejavu-core
+            librsvg2-bin fonts-sil-lateef fonts-dejavu-core eatmydata
 
       - name: Get the code
         uses: actions/checkout@v4
@@ -28,7 +28,7 @@ jobs:
       - name: Build the ISO
         run: |
           chmod +x build.sh config/hooks/normal/*.hook.chroot
-          ./build.sh
+          ./build.sh --release
 
       - name: Upload the ISO
         uses: actions/upload-artifact@v4

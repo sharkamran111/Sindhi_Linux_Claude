@@ -55,8 +55,12 @@ fork, so builds run in a Debian 13 chroot.
 |---|---|
 | `tools/setup-build-host.sh` | Run once with sudo: installs debootstrap, creates `/srv/sindhos-build` (Debian trixie + live-build), installs `/usr/local/sbin/sindhos-build`. `--passwordless` adds a sudoers rule for that one command |
 | `tools/sindhos-build.in` | The build command: copies the checkout into the chroot, runs `./build.sh`, puts the ISO and log in `out/`. Keeps the package cache between builds |
-| `tools/build.sh` | What you (or I) run to build |
+| `tools/build.sh` | What you (or I) run to build. `--release` = xz squashfs (smaller, slower); default = zstd level 3 (fast test builds). `--clean` = remove old build leftovers, keep downloaded packages |
+| `cache/` (git-ignored) | Local copies of files the build would otherwise download: the Broadcom b43/b43legacy firmware, served to Debian's installer packages by a build-time `wget` helper (checksums still verified) |
 | `tools/boot-test.py` | Boots the ISO in QEMU (KVM, any RAM size, BIOS or UEFI), sends keys, saves PNG screenshots to `shots/`. Also used by CI. `--gui` for testing by hand |
+
+Build speed: dpkg runs under `eatmydata` inside the image (no fsync, big
+win on a hard disk), and downloaded packages are kept between builds.
 
 Security note on `--passwordless`: the build runs hooks from this repo as
 root, so a password-free build means anything running as your user can get

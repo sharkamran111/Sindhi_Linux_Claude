@@ -17,3 +17,6 @@ config/build
 config/includes.chroot/usr/share/themes/
 out/
 shots/
+# Firmware copied from cache/ by build.sh at build time
+config/includes.chroot_before_packages/usr/local/share/sindhos/firmware/
+config/environment.chroot

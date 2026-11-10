@@ -45,12 +45,18 @@ sudo tools/setup-build-host.sh --passwordless  # or: builds run without a passwo
 Then build and test:
 
 ```sh
-tools/build.sh                     # ISO and log in out/
+tools/build.sh                     # test build (fast zstd), ISO and log in out/
+tools/build.sh --release           # release build (xz, smaller ISO)
+tools/build.sh --clean             # remove old build leftovers, keep downloads
 tools/boot-test.py                 # boots it in QEMU, screenshots in shots/
 tools/boot-test.py --mem 1024      # low-end check
 tools/boot-test.py --uefi          # UEFI boot
 tools/boot-test.py --gui           # try it yourself in a window
 ```
+
+Files in `cache/` (not in git) are used instead of downloads during the build:
+`broadcom-wl-6.30.163.46.tar.bz2` and `wl_apsta-3.130.20.0.o` (Broadcom wifi
+firmware). Without them the firmware installers download them while building.
 
 ## Project layout
 

@@ -1,0 +1,20 @@
+#!/bin/sh
+# SindhOS build-time only (removed by hook 9990 before the image is packed).
+#
+# The Broadcom firmware installers (firmware-b43-installer,
+# firmware-b43legacy-installer) download their firmware with wget while they
+# install. If build.sh placed that file in /usr/local/share/sindhos/firmware,
+# hand over the local copy instead; the installer still checks its SHA512.
+# Anything else goes to the real wget.
+dir=/usr/local/share/sindhos/firmware
+url=
+for arg in "$@"; do
+  case $arg in http://*|https://*|ftp://*) url=$arg ;; esac
+done
+file=${url##*/}
+if [ -n "$file" ] && [ -f "$dir/$file" ]; then
+  echo "sindhos: using local $file instead of downloading $url"
+  cp "$dir/$file" "./$file"
+  exit 0
+fi
+exec /usr/bin/wget "$@"

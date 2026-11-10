@@ -61,15 +61,15 @@ chroot "$ROOT" sh -c '
     live-build debootstrap squashfs-tools xorriso \
     grub-efi-amd64-bin grub-pc-bin mtools dosfstools \
     syslinux syslinux-common isolinux ca-certificates xz-utils \
-    librsvg2-bin fonts-sil-lateef fonts-dejavu-core cpio
+    librsvg2-bin fonts-sil-lateef fonts-dejavu-core cpio eatmydata
   apt-get clean
 '
 umount "$ROOT/proc"
 trap - EXIT
 
 echo "== 3/4 Build command /usr/local/sbin/sindhos-build"
-# The repo path is fixed inside the installed copy, so the command takes no
-# arguments and always builds this checkout.
+# The repo path is fixed inside the installed copy, so the command always
+# builds this checkout. Its only options are --release and --clean.
 sed "s|@REPO@|$REPO|; s|@ROOT@|$ROOT|" "$REPO/tools/sindhos-build.in" \
   > /usr/local/sbin/sindhos-build
 chown root:root /usr/local/sbin/sindhos-build
