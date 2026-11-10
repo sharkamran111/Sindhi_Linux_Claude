@@ -35,6 +35,23 @@ sudo apt install live-build
 sudo ./build.sh
 ```
 
+On any other Linux (e.g. Ubuntu), use a Debian build chroot. Set it up once:
+
+```sh
+sudo tools/setup-build-host.sh                 # asks for your password on every build
+sudo tools/setup-build-host.sh --passwordless  # or: builds run without a password
+```
+
+Then build and test:
+
+```sh
+tools/build.sh                     # ISO and log in out/
+tools/boot-test.py                 # boots it in QEMU, screenshots in shots/
+tools/boot-test.py --mem 1024      # low-end check
+tools/boot-test.py --uefi          # UEFI boot
+tools/boot-test.py --gui           # try it yourself in a window
+```
+
 ## Project layout
 
 | Path | What it does |
@@ -44,6 +61,7 @@ sudo ./build.sh
 | `config/hooks/normal/` | Setup that runs while the image is built (languages, splash, wallpaper) |
 | `config/includes.chroot/` | Files copied into the system (boot splash, login screen, keyboard) |
 | `keyboard/layout.py` | The Roman Sindhi layout. Edit this, then run `python3 keyboard/gen.py` |
+| `tools/` | Local build (Debian chroot) and the QEMU boot test |
 | `branding/` | Logo and artwork sources |
 | `.github/workflows/` | Builds the ISO automatically on every push |
 

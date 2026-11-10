@@ -1,0 +1,73 @@
+#!/bin/sh
+# SindhOS ISO build, installed by tools/setup-build-host.sh as
+# /usr/local/sbin/sindhos-build. Runs as root, takes no arguments.
+#
+# Copies the checkout at @REPO@ into the Debian build chroot @ROOT@, runs
+# ./build.sh there with Debian's live-build, and puts the ISO and the build
+# log in @REPO@/out/.
+set -eu
+
+REPO=@REPO@
+ROOT=@ROOT@
+WORK=$ROOT/work
+OUT=$REPO/out
+
+[ "$(id -u)" = 0 ] || { echo "run with sudo" >&2; exit 1; }
+[ -x "$ROOT/usr/bin/lb" ] || { echo "build chroot missing, run tools/setup-build-host.sh" >&2; exit 1; }
+[ -f "$REPO/build.sh" ] || { echo "no build.sh in $REPO" >&2; exit 1; }
+
+# Unmount everything below a directory, deepest first.
+unmount_below() {
+  findmnt -rno TARGET | grep -E "^$1(/|$)" | sort -r | while read -r m; do
+    umount -l "$m" 2>/dev/null || true
+  done
+}
+
+cleanup() {
+  unmount_below "$WORK"
+  for m in dev/pts dev sys proc; do umount -l "$ROOT/$m" 2>/dev/null || true; done
+}
+trap cleanup EXIT INT TERM
+
+# A crashed earlier build can leave mounts behind; never copy over them.
+unmount_below "$WORK"
+mkdir -p "$WORK" "$OUT"
+
+# Copy the source (including uncommitted changes). Keep live-build's package
+# cache and its own build dirs; build.sh cleans those itself.
+rsync -a --delete \
+  --exclude=/.git/ --exclude=/out/ --exclude=/shots/ --exclude='*.iso' \
+  --filter='P /cache/' --filter='P /chroot/' --filter='P /binary/' --filter='P /.build/' \
+  "$REPO/" "$WORK/"
+
+cp -L /etc/resolv.conf "$ROOT/etc/resolv.conf"
+mount -t proc proc "$ROOT/proc"
+mount -t sysfs sys "$ROOT/sys"
+mount --bind /dev "$ROOT/dev"
+mount --bind /dev/pts "$ROOT/dev/pts"
+
+STAMP=$(date +%Y%m%d-%H%M%S)
+LOG=$OUT/build-$STAMP.log
+echo "Building... log: $LOG"
+start=$(date +%s)
+if chroot "$ROOT" /bin/sh -c 'cd /work && chmod +x build.sh config/hooks/normal/*.hook.chroot && ./build.sh' > "$LOG" 2>&1; then
+  status=0
+else
+  status=$?
+fi
+mins=$(( ($(date +%s) - start) / 60 ))
+
+owner=$(stat -c %u:%g "$REPO")
+if [ "$status" = 0 ]; then
+  rm -f "$OUT"/*.iso
+  for iso in "$WORK"/*.iso; do
+    cp "$iso" "$OUT/"
+    echo "ISO: $OUT/$(basename "$iso") ($(du -h "$iso" | cut -f1), ${mins} min)"
+  done
+else
+  echo "BUILD FAILED after ${mins} min (exit $status). Last lines of $LOG:" >&2
+  tail -n 30 "$LOG" >&2
+fi
+ln -sf "$(basename "$LOG")" "$OUT/build.log"
+chown -R "$owner" "$OUT"
+exit "$status"

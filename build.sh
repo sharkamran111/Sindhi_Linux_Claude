@@ -5,7 +5,8 @@ set -e
 
 cd "$(dirname "$0")"
 
-lb clean --purge >/dev/null 2>&1 || true
+# Keep the downloaded package cache between local builds (much faster).
+lb clean >/dev/null 2>&1 || true
 
 lb config \
   --distribution trixie \

@@ -15,3 +15,5 @@ config/common
 config/source
 config/build
 config/includes.chroot/usr/share/themes/
+out/
+shots/
