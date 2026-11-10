@@ -40,6 +40,7 @@ pavucontrol
 
 # Browser
 firefox-esr
+xdg-utils
 
 # Sindhi, Urdu and Arabic script support
 locales
