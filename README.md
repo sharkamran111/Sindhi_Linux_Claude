@@ -7,12 +7,14 @@ A light Linux for everyday laptops, with Sindhi built in from the first boot.
 ## What it is
 
 - **Sindhi first:** Sindhi fonts (SIL Lateef, made for Sindhi), Sindhi and Urdu locales
-- **Roman Sindhi keyboard:** type Sindhi on a normal English keyboard by sound, `B U t Y` gives **سنڌي**. Switch with **Super+Space**, **Alt+Shift** or the taskbar button. Types real Unicode Sindhi, right-to-left, with joined letters
+- **Roman Sindhi keyboard:** type Sindhi on a normal English keyboard by sound, `B U t Y` gives **سنڌي**. Switch with **Ctrl+Space** (like macOS), **Alt+Shift** or the top-bar button. Types real Unicode Sindhi, right-to-left, with joined letters
 - **Keyboard guide app:** *Sindhi Keyboard Guide* in the Applications menu shows every key, the marks and punctuation, in Sindhi and English
 - **Ajrak look:** the logo, boot screen, login screen and wallpaper use an ajrak-style pattern
 - **Welcomes you in Sindhi:** the boot and login screens say **ڀلي ڪري آيا**
 - **Runs on low-end machines:** XFCE desktop, a small set of apps, aimed at 2–4 GB RAM laptops
+- **Mac-style desktop:** top bar, dock with magnifying icons, rounded windows with close/minimize/maximize on the left, **Super+Space** search like Spotlight (WhiteSur theme, Papirus icons, Inter font)
 - **A normal Linux underneath:** login with your username and password, `sudo`, `su`, terminal, Firefox
+- **`sindh` = `sudo`:** type `sindh apt update` or `sudo apt update`, both work the same, no warnings
 - **Built on Debian 13:** security updates come straight from Debian, so the system stays safe for years
 
 ## Try it

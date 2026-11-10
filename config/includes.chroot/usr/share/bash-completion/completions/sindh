@@ -1,0 +1,6 @@
+# shellcheck shell=bash
+# Tab completion for "sindh": reuse the completion for "sudo".
+if [ -r /usr/share/bash-completion/completions/sudo ]; then
+  . /usr/share/bash-completion/completions/sudo
+  eval "$(complete -p sudo 2>/dev/null | sed -e 's/ sudo$/ sindh/')"
+fi

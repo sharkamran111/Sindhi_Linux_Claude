@@ -79,16 +79,26 @@ jobs:
           for k in m o u s e p a d; do key $k; done; key ret; sleep 8
           snap 1 04-editor-english
           # Switch to Roman Sindhi and type: سنڌي ٻولي گھر جھڙو۔
-          key meta_l-spc; sleep 2
+          key ctrl-spc; sleep 2
           for k in shift-b shift-u t shift-y spc c shift-w shift-s shift-y spc shift-q y spc m z shift-w dot; do key $k; done
           sleep 1
           snap 1 05-typed-sindhi
           # Back to English, then open the keyboard guide
-          key meta_l-spc; sleep 2
+          key ctrl-spc; sleep 2
           key alt-f2; sleep 3
           for k in f i r e f o x minus e s r spc slash u s r slash s h a r e slash s i n d h i minus l i n u x slash k e y b o a r d minus g u i d e slash i n d e x dot h t m l; do key $k; done
           sleep 1; key ret; sleep 2; key ret
           snap 30 06-keyboard-guide
+          # Spotlight-style search
+          key meta_l-spc; sleep 3
+          for k in c a l c; do key $k; done
+          snap 2 07-search
+          key esc; sleep 1
+          # Terminal: sindh works like sudo
+          key ctrl-alt-t; sleep 6
+          for k in s i n d h spc w h o a m i; do key $k; done; key ret; sleep 1
+          for k in s u d o spc w h o a m i; do key $k; done; key ret
+          snap 3 08-sindh-terminal
           echo "quit" | socat - UNIX-CONNECT:/tmp/qmp.sock >/dev/null || true
 
       - name: Upload screenshots

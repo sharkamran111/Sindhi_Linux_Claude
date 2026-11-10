@@ -81,12 +81,12 @@
   <h2><span>How to switch</span><span class="sd">ٻولي ڪيئن مٽايو</span></h2>
   <div class="card steps">
     <div>
-      <p>Press <kbd>Super</kbd> + <kbd>Space</kbd> or <kbd>Alt</kbd> + <kbd>Shift</kbd> to switch between English and Sindhi.</p>
-      <p>Or click the language button on the taskbar, next to the clock.</p>
+      <p>Press <kbd>Ctrl</kbd> + <kbd>Space</kbd> or <kbd>Alt</kbd> + <kbd>Shift</kbd> to switch between English and Sindhi.</p>
+      <p>Or click the language button in the top bar, next to the clock.</p>
       <p>Hold <kbd>Shift</kbd> for the second set of letters.</p>
     </div>
     <div class="sd">
-      <p>انگريزي ۽ سنڌي جي وچ ۾ مٽائڻ لاءِ <kbd>Super</kbd> + <kbd>Space</kbd> يا <kbd>Alt</kbd> + <kbd>Shift</kbd> دٻايو.</p>
+      <p>انگريزي ۽ سنڌي جي وچ ۾ مٽائڻ لاءِ <kbd>Ctrl</kbd> + <kbd>Space</kbd> يا <kbd>Alt</kbd> + <kbd>Shift</kbd> دٻايو.</p>
       <p>يا ٽاسڪ بار تي ٻوليءَ واري بٽڻ تي ڪلڪ ڪريو.</p>
       <p>ٻين اکرن لاءِ <kbd>Shift</kbd> دٻائي رکو.</p>
     </div>

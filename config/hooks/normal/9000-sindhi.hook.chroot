@@ -39,6 +39,22 @@ done
 # 3d. Roman Sindhi keyboard defaults (IBus settings)
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
+# 3e. Mac-style desktop
+# Dock theme from WhiteSur
+mkdir -p /usr/share/plank/themes/WhiteSur
+cp /usr/share/themes/WhiteSur-Light/plank/dock.theme /usr/share/plank/themes/WhiteSur/dock.theme
+dconf update
+# Super+Space opens search (like Spotlight). Insert before the Alt+F2 shortcut.
+KS=/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+if [ -f "$KS" ] && ! grep -q '&lt;Super&gt;space' "$KS"; then
+  sed -i '/name="&lt;Alt&gt;F2"/i <property name="\&lt;Super\&gt;space" type="string" value="xfce4-appfinder --collapsed"/>' "$KS"
+fi
+
+# 3f. "sindh" works exactly like "sudo"
+ln -sf /usr/bin/sudo /usr/bin/sindh
+chmod 0440 /etc/sudoers.d/sindh
+visudo -c -f /etc/sudoers.d/sindh
+
 # 4. System name
 for f in /usr/lib/os-release /etc/os-release; do
   [ -f "$f" ] && [ ! -L "$f" ] || continue

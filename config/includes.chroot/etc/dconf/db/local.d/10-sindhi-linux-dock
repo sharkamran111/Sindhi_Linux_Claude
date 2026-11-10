@@ -1,0 +1,9 @@
+# Sindhi Linux dock (Plank) defaults
+[net/launchpad/plank/docks/dock1]
+theme='WhiteSur'
+icon-size=44
+zoom-enabled=true
+zoom-percent=150
+hide-mode='intelligent'
+position='bottom'
+dock-items=['thunar.dockitem', 'firefox-esr.dockitem', 'xfce4-terminal.dockitem', 'org.xfce.mousepad.dockitem', 'galculator.dockitem', 'sindhi-keyboard-guide.dockitem', 'xfce-settings-manager.dockitem']

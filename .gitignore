@@ -14,3 +14,4 @@ config/chroot
 config/common
 config/source
 config/build
+config/includes.chroot/usr/share/themes/

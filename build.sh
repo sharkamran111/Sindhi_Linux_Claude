@@ -20,6 +20,12 @@ lb config \
   --updates true \
   --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhi-linux keyboard-layouts=us"
 
+# Mac-style theme (WhiteSur, MIT) unpacked into the image
+mkdir -p config/includes.chroot/usr/share/themes
+for t in third_party/whitesur/WhiteSur-*.tar.xz; do
+  tar -xJf "$t" -C config/includes.chroot/usr/share/themes
+done
+
 # Boot menu branding: start from live-build's own templates, then swap in
 # the Sindhi Linux background and names.
 mkdir -p config/bootloaders

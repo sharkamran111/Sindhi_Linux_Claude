@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Dock
+Exec=plank
+Icon=plank
+OnlyShowIn=XFCE;
+X-GNOME-Autostart-enabled=true
