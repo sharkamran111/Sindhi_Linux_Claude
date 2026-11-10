@@ -1,6 +1,7 @@
-# English + Sindhi keyboards. Switch with Alt+Shift.
+# English hardware layout. Sindhi typing is handled by IBus (Roman Sindhi),
+# switch with Super+Space or Alt+Shift.
 XKBMODEL="pc105"
-XKBLAYOUT="us,pk"
-XKBVARIANT=",snd"
-XKBOPTIONS="grp:alt_shift_toggle"
+XKBLAYOUT="us"
+XKBVARIANT=""
+XKBOPTIONS=""
 BACKSPACE="guess"

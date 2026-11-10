@@ -1,0 +1,2 @@
+# Sindhi Linux: use IBus for the English / Roman Sindhi keyboard switch
+run_im ibus

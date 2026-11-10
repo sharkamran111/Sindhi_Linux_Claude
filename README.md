@@ -6,7 +6,9 @@ A light Linux for everyday laptops, with Sindhi built in from the first boot.
 
 ## What it is
 
-- **Sindhi first:** Sindhi fonts (SIL Lateef, made for Sindhi), Sindhi keyboard ready to go (switch with **Alt+Shift**), Sindhi and Urdu locales
+- **Sindhi first:** Sindhi fonts (SIL Lateef, made for Sindhi), Sindhi and Urdu locales
+- **Roman Sindhi keyboard:** type Sindhi on a normal English keyboard by sound, `B U t Y` gives **سنڌي**. Switch with **Super+Space**, **Alt+Shift** or the taskbar button. Types real Unicode Sindhi, right-to-left, with joined letters
+- **Keyboard guide app:** *Sindhi Keyboard Guide* in the Applications menu shows every key, the marks and punctuation, in Sindhi and English
 - **Ajrak look:** the logo, boot screen, login screen and wallpaper use an ajrak-style pattern
 - **Welcomes you in Sindhi:** the boot and login screens say **ڀلي ڪري آيا**
 - **Runs on low-end machines:** XFCE desktop, a small set of apps, aimed at 2–4 GB RAM laptops
@@ -39,6 +41,7 @@ sudo ./build.sh
 | `config/package-lists/` | Which apps go into the system |
 | `config/hooks/normal/` | Setup that runs while the image is built (languages, splash, wallpaper) |
 | `config/includes.chroot/` | Files copied into the system (boot splash, login screen, keyboard) |
+| `keyboard/layout.py` | The Roman Sindhi layout. Edit this, then run `python3 keyboard/gen.py` |
 | `branding/` | Logo and artwork sources |
 | `.github/workflows/` | Builds the ISO automatically on every push |
 

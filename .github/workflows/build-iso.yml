@@ -73,6 +73,21 @@ jobs:
           for i in $(seq -w 1 20); do snap 2 "01-boot-$i"; done
           snap 20 02-desktop
           snap 30 03-desktop-later
+          key() { echo "sendkey $1" | socat - UNIX-CONNECT:/tmp/qmp.sock >/dev/null; sleep 0.3; }
+          # Open the text editor
+          key alt-f2; sleep 3
+          for k in m o u s e p a d; do key $k; done; key ret; sleep 8
+          snap 1 04-editor-english
+          # Switch to Roman Sindhi and type: سنڌي ٻولي گھر جھڙو۔
+          key meta_l-spc; sleep 2
+          for k in shift-b shift-u t shift-y spc c shift-w shift-s shift-y spc shift-q y spc m z shift-w dot; do key $k; done
+          sleep 1
+          snap 1 05-typed-sindhi
+          # Back to English, then open the keyboard guide
+          key meta_l-spc; sleep 2
+          key alt-f2; sleep 3
+          for k in x d g minus o p e n spc slash u s r slash s h a r e slash s i n d h i minus l i n u x slash k e y b o a r d minus g u i d e slash i n d e x dot h t m l; do key $k; done; key ret
+          snap 25 06-keyboard-guide
           echo "quit" | socat - UNIX-CONNECT:/tmp/qmp.sock >/dev/null || true
 
       - name: Upload screenshots

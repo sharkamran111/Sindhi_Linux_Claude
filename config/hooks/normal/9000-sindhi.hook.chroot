@@ -36,6 +36,9 @@ for f in $(grep -rl "Install Debian" /usr/share/applications 2>/dev/null); do
     -e 's/^Icon=.*/Icon=\/usr\/share\/pixmaps\/sindhi-linux.png/' "$f"
 done
 
+# 3d. Roman Sindhi keyboard defaults (IBus settings)
+glib-compile-schemas /usr/share/glib-2.0/schemas
+
 # 4. System name
 for f in /usr/lib/os-release /etc/os-release; do
   [ -f "$f" ] && [ ! -L "$f" ] || continue

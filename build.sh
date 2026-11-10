@@ -18,7 +18,7 @@ lb config \
   --iso-volume "SINDHI_LINUX" \
   --security true \
   --updates true \
-  --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhi-linux keyboard-layouts=us,pk keyboard-variants=,snd keyboard-options=grp:alt_shift_toggle"
+  --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhi-linux keyboard-layouts=us"
 
 # Boot menu branding: start from live-build's own templates, then swap in
 # the Sindhi Linux background and names.

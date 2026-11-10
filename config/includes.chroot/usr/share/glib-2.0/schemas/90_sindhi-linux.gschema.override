@@ -1,0 +1,10 @@
+# Sindhi Linux: English + Roman Sindhi, quick switch with Super+Space or Alt+Shift
+[org.freedesktop.ibus.general]
+preload-engines=['xkb:us::eng', 'm17n:sd:roman-sindhi']
+engines-order=['xkb:us::eng', 'm17n:sd:roman-sindhi']
+
+[org.freedesktop.ibus.general.hotkey]
+triggers=['<Super>space', '<Alt>Shift_L', '<Shift>Alt_L']
+
+[org.freedesktop.ibus.panel]
+show-icon-on-systray=true

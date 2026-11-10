@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sindhi Keyboard Guide · سنڌي ڪيبورڊ رهنمائي</title>
+<style>
+  :root {
+    --red: #9e1b20; --indigo: #1b2754; --ink: #0d1430; --cream: #f4ead5;
+    --gold: #c9b98f; --line: #2c3a72; --key: #18224a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ink); color: var(--cream);
+    font: 16px/1.5 "DejaVu Sans", sans-serif;
+  }
+  .band { height: 12px; background: var(--indigo); border-bottom: 4px solid var(--red); }
+  .band.bottom { border-bottom: 0; border-top: 4px solid var(--red); }
+  main { max-width: 980px; margin: 0 auto; padding: 24px 20px 48px; }
+  .sd { font-family: "Lateef", "Noto Naskh Arabic", serif; direction: rtl; unicode-bidi: isolate; }
+  .big { font-size: 30px; line-height: 1.2; }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  header img { width: 72px; height: 72px; }
+  h1 { margin: 0; font-size: 22px; letter-spacing: 1px; }
+  h1 .sd { display: block; font-size: 44px; font-weight: bold; line-height: 1.1; }
+  h2 { margin: 36px 0 12px; font-size: 18px; color: var(--gold); display: flex; justify-content: space-between; align-items: baseline; }
+  h2 .sd { font-size: 28px; }
+  .card { background: #131c3f; border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .steps p { margin: 0 0 6px; }
+  .steps .sd { font-size: 24px; text-align: right; }
+  kbd {
+    display: inline-block; min-width: 1.8em; padding: 1px 7px; border-radius: 6px;
+    background: var(--key); border: 1px solid #3a4a8a; border-bottom-width: 3px;
+    font: 14px "DejaVu Sans Mono", monospace; text-align: center; color: var(--cream);
+  }
+  .toggle { display: inline-flex; background: var(--key); border-radius: 999px; padding: 4px; }
+  .toggle button {
+    border: 0; background: none; color: var(--gold); font-size: 15px;
+    padding: 6px 18px; border-radius: 999px; cursor: pointer;
+  }
+  .toggle button.on { background: var(--red); color: var(--cream); }
+  .kb { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .row { display: flex; gap: 8px; }
+  .row:nth-child(2) { padding-left: 28px; }
+  .row:nth-child(3) { padding-left: 64px; }
+  .k {
+    flex: 0 0 76px; height: 76px; border-radius: 10px; background: var(--key);
+    border: 1px solid #3a4a8a; border-bottom-width: 4px; position: relative;
+  }
+  .k .en { position: absolute; top: 5px; left: 8px; font-size: 13px; color: var(--gold); }
+  .k .ch {
+    position: absolute; inset: 14px 0 0 0; display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  td, th { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  th { color: var(--gold); font-weight: normal; font-size: 14px; }
+  td.sd { text-align: right; font-size: 24px; }
+  .note .sd { font-size: 24px; }
+  textarea {
+    width: 100%; min-height: 110px; resize: vertical; border-radius: 10px;
+    background: #0a1028; color: var(--cream); border: 1px solid #3a4a8a;
+    padding: 12px; font-size: 30px;
+  }
+  .note { color: var(--gold); font-size: 14px; margin-top: 10px; }
+  @media (max-width: 860px) {
+    .k { flex-basis: 8.5vw; height: 8.5vw; } .k .ch { font-size: 4vw; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="band"></div>
+<main>
+  <header>
+    <h1><span class="sd">سنڌي ڪيبورڊ رهنمائي</span>SINDHI KEYBOARD GUIDE</h1>
+    <img src="/usr/share/pixmaps/sindhi-linux.png" alt="">
+  </header>
+
+  <h2><span>How to switch</span><span class="sd">ٻولي ڪيئن مٽايو</span></h2>
+  <div class="card steps">
+    <div>
+      <p>Press <kbd>Super</kbd> + <kbd>Space</kbd> or <kbd>Alt</kbd> + <kbd>Shift</kbd> to switch between English and Sindhi.</p>
+      <p>Or click the language button on the taskbar, next to the clock.</p>
+      <p>Hold <kbd>Shift</kbd> for the second set of letters.</p>
+    </div>
+    <div class="sd">
+      <p>انگريزي ۽ سنڌي جي وچ ۾ مٽائڻ لاءِ <kbd>Super</kbd> + <kbd>Space</kbd> يا <kbd>Alt</kbd> + <kbd>Shift</kbd> دٻايو.</p>
+      <p>يا ٽاسڪ بار تي ٻوليءَ واري بٽڻ تي ڪلڪ ڪريو.</p>
+      <p>ٻين اکرن لاءِ <kbd>Shift</kbd> دٻائي رکو.</p>
+    </div>
+  </div>
+
+  <h2>
+    <span>Letters</span>
+    <span class="toggle" role="group" aria-label="Shift">
+      <button id="b-lower" class="on" type="button">abc</button>
+      <button id="b-upper" type="button">ABC (Shift)</button>
+    </span>
+  </h2>
+  <div class="card"><div class="kb" id="kb"></div></div>
+
+  <h2><span>Marks (number keys)</span><span class="sd">اعراب</span></h2>
+  <div class="card">
+    <table>
+      <tr><th>Key</th><th style="text-align:right">Sindhi</th><th>Name</th><th style="text-align:right">نالو</th></tr>
+      @MARKS@
+    </table>
+    <p class="note">The number keys type marks while Sindhi is on. Switch to English to type numbers.</p>
+  </div>
+
+  <h2><span>Punctuation</span><span class="sd">نشانيون</span></h2>
+  <div class="card">
+    <table>
+      <tr><th>Key</th><th style="text-align:right">Sindhi</th><th>Name</th><th style="text-align:right">نالو</th></tr>
+      @PUNCT@
+    </table>
+  </div>
+
+  <h2><span>Try it</span><span class="sd">هتي لکي ڏسو</span></h2>
+  <div class="card">
+    <textarea class="sd" dir="rtl" placeholder="سنڌي لکو…"></textarea>
+    <p class="note">Switch to Sindhi and type here. Example: <kbd>B</kbd> <kbd>U</kbd> <kbd>t</kbd> <kbd>Y</kbd> gives <span class="sd">سنڌي</span>.
+    The letter <span class="sd">ژ</span> is not on this layout yet.</p>
+  </div>
+</main>
+<div class="band bottom"></div>
+
+<script>
+  const DATA = @DATA@;
+  const kb = document.getElementById("kb");
+  const bl = document.getElementById("b-lower");
+  const bu = document.getElementById("b-upper");
+
+  function draw(upper) {
+    kb.innerHTML = "";
+    for (const keys of DATA.rows) {
+      const row = document.createElement("div");
+      row.className = "row";
+      for (const k of keys) {
+        const key = upper ? k.toUpperCase() : k;
+        const map = upper ? DATA.upper : DATA.lower;
+        const el = document.createElement("div");
+        el.className = "k";
+        el.innerHTML = '<span class="en"></span><span class="ch sd"></span>';
+        el.querySelector(".en").textContent = key;
+        el.querySelector(".ch").textContent = map[key] || "";
+        row.appendChild(el);
+      }
+      kb.appendChild(row);
+    }
+    bl.classList.toggle("on", !upper);
+    bu.classList.toggle("on", upper);
+  }
+  bl.onclick = () => draw(false);
+  bu.onclick = () => draw(true);
+  document.addEventListener("keydown", e => { if (e.key === "Shift") draw(true); });
+  document.addEventListener("keyup", e => { if (e.key === "Shift") draw(false); });
+  draw(false);
+</script>
+</body>
+</html>

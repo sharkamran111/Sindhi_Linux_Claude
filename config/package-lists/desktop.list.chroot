@@ -44,6 +44,11 @@ firefox-esr
 # Sindhi, Urdu and Arabic script support
 locales
 keyboard-configuration
+ibus
+ibus-m17n
+ibus-gtk3
+im-config
+m17n-db
 fonts-sil-lateef
 fonts-sil-scheherazade
 fonts-noto-core
