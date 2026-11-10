@@ -64,14 +64,25 @@ fork, so builds run in a Debian 13 chroot.
 - The desktop did not start at 1 GB. live-build's default hook
   `9000-remove-gnome-icon-cache` deletes all GTK icon caches, so each GTK
   program indexed Papirus's 43,000 icons itself (80–120 MB each). Fixed by hook
-  `9500-sindhos-icon-caches` (costs 9 MB disk). Checked on the v0.1 ISO by
-  rebuilding the caches at runtime: 1 GB desktop then runs with 606 MB used,
-  360 MB available
+  `9500-sindhos-icon-caches` (costs 9 MB disk); checked in a rebuilt ISO.
+
+**Phase 0 baseline (v0.1 content, 2026-11-11 build, measured in QEMU):**
+
+| | 1 GB | 2 GB |
+|---|---|---|
+| Idle desktop (`ram-check`) | 619 MB used, 347 MB available, no OOM | — |
+| Desktop + Mousepad + terminal | — | 726 MB used, 1,246 MB available |
+| Desktop + Firefox (keyboard guide) + Mousepad + terminal | 941 MB used, **26 MB available** | fine |
+| Build time (packages cached, zstd) | 15 min | |
+| ISO size | 1.7 GB | |
+
 - Still open for Phase 1: the initrd is 140 MB (202 MB of it is firmware for
   AMD/NVIDIA GPUs and server network cards). It boots fine at 1 GB but slows
   boot from USB; worth trimming
-- Idle desktop at 1 GB uses about 600 MB, above the 450 MB target. Biggest
-  remaining items: xfwm4 (compositor), ibus UI, Xorg
+- Idle desktop at 1 GB uses about 620 MB, above the 450 MB target. Biggest
+  items: Xorg 49 MB, xfwm4 45 MB (compositor), xfce4-session 20 MB
+- Mousepad's monospace font draws ڌ and ٻ so they look like ت and ب (the
+  typed bytes are correct). Fix the monospace fallback in Phase 4
 
 Build speed: dpkg runs under `eatmydata` inside the image (no fsync, big
 win on a hard disk), and downloaded packages are kept between builds.

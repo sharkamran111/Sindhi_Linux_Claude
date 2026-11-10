@@ -103,11 +103,22 @@ def main():
                 sys.exit("No login prompt on the serial console after 5 minutes")
             print(f"Booted. Letting the desktop start for {a.settle} s...", flush=True)
             ser.read(a.settle)
-            ser.send("sindhi")
-            if not ser.wait_for(b"assword", 120):
-                sys.exit("No password prompt: the system is too busy (likely out of memory)")
-            ser.send("live")
-            ser.read(5)
+            # login clears its input right after printing "Password:", so a
+            # password sent too early is lost: pause, and retry a few times.
+            for attempt in range(3):
+                mark = len(ser.buf)
+                ser.send("sindhi")
+                if not ser.wait_for(b"assword", 120, mark):
+                    sys.exit("No password prompt: the system is too busy (likely out of memory)")
+                time.sleep(1.5)
+                ser.send("live")
+                ser.wait_for(b"$ ", 60, mark)
+                if b"$ " in ser.buf[mark:]:
+                    break
+                ser.wait_for(b"login:", 90, mark + 10)
+            else:
+                sys.exit("Could not log in on the serial console")
+            ser.read(2)
             start = len(ser.buf)
             ser.send(REPORT)
             if not ser.wait_for(b"==END==", 180, start):
