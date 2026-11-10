@@ -1,6 +1,6 @@
 #!/bin/sh
 # Remove build-time helpers so they don't end up in the ISO.
 set -e
-rm -f /usr/local/bin/wget
+rm -f /usr/local/bin/wget /etc/apt/apt.conf.d/99sindhos-build-path
 rm -rf /usr/local/share/sindhos/firmware
 rmdir /usr/local/share/sindhos 2>/dev/null || true

@@ -21,6 +21,7 @@ import tempfile
 import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TYPED_FILE = "/tmp/sindhi-typed.txt"
 GUIDE = "/usr/share/sindhi-linux/keyboard-guide/index.html"  # renamed in Phase 1
 OVMF = ["/usr/share/OVMF/OVMF_CODE_4M.fd", "/usr/share/ovmf/OVMF.fd", "/usr/share/OVMF/OVMF_CODE.fd"]
 
@@ -98,13 +99,18 @@ def scenario(r):
            "shift-y", "spc", "shift-q", "y", "spc", "m", "z", "shift-w", "dot")
     r.shot("05-typed-sindhi", 1)
     r.key("ctrl-spc", 2)
+    # Save it, so the terminal step can show the exact letters as UTF-8 bytes
+    r.key("ctrl-s", 3)
+    r.type(TYPED_FILE + "\n")
+    time.sleep(2)
 
     # Keyboard guide app in the browser
     r.key("alt-f2", 3)
     r.type("firefox-esr " + GUIDE + "\n")
     r.key("ret", 2)
     r.shot("06-keyboard-guide", 30)
-    r.key("ctrl-q", 3)
+    r.key("ctrl-q", 3)          # with 2 tabs open Firefox asks "Quit Firefox?",
+    r.key("ret", 3)             # Enter = "Quit Firefox" (harmless if it didn't ask)
 
     # Spotlight-style search
     r.key("meta_l-spc", 3)
@@ -117,6 +123,8 @@ def scenario(r):
     r.type("sindh whoami\n")
     r.type("cat /etc/os-release | head -3\n")
     r.type("free -m\n")
+    # Expected: d8 b3 d9 86 da 8c d9 8a = س ن ڌ ي (ڌ is da 8c, ت would be d8 aa)
+    r.type("od -An -tx1 " + TYPED_FILE + " | head -2\n")
     r.shot("08-terminal-ram", 3)
 
 

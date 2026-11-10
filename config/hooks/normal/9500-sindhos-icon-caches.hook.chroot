@@ -1,0 +1,13 @@
+#!/bin/sh
+# Rebuild the GTK icon caches.
+#
+# live-build's default hook 9000-remove-gnome-icon-cache deletes every
+# /usr/share/icons/*/icon-theme.cache to save ~9 MB of disk. Without the
+# cache each GTK program indexes the icon folders itself (Papirus alone has
+# 40,000+ files): nm-applet grew from 12 MB to 121 MB, and the desktop no
+# longer fit in 1 GB of RAM. Runs after that hook, so the caches come back.
+set -e
+for dir in /usr/share/icons/*/; do
+  [ -f "${dir}index.theme" ] || continue
+  gtk-update-icon-cache --force --quiet "$dir" || echo "icon cache failed: $dir"
+done

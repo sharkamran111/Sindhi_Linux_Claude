@@ -52,6 +52,7 @@ tools/boot-test.py                 # boots it in QEMU, screenshots in shots/
 tools/boot-test.py --mem 1024      # low-end check
 tools/boot-test.py --uefi          # UEFI boot
 tools/boot-test.py --gui           # try it yourself in a window
+tools/ram-check.py --mem 1024      # memory use as text (serial console)
 ```
 
 Files in `cache/` (not in git) are used instead of downloads during the build:
@@ -67,7 +68,7 @@ firmware). Without them the firmware installers download them while building.
 | `config/hooks/normal/` | Setup that runs while the image is built (languages, splash, wallpaper) |
 | `config/includes.chroot/` | Files copied into the system (boot splash, login screen, keyboard) |
 | `keyboard/layout.py` | The Roman Sindhi layout. Edit this, then run `python3 keyboard/gen.py` |
-| `tools/` | Local build (Debian chroot) and the QEMU boot test |
+| `tools/` | Local build (Debian chroot), QEMU boot test and RAM check |
 | `branding/` | Logo and artwork sources |
 | `.github/workflows/` | Builds the ISO automatically on every push |
 

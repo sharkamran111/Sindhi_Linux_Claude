@@ -5,7 +5,8 @@
 # firmware-b43legacy-installer) download their firmware with wget while they
 # install. If build.sh placed that file in /usr/local/share/sindhos/firmware,
 # hand over the local copy instead; the installer still checks its SHA512.
-# Anything else goes to the real wget.
+# Anything else goes to the real wget. apt only lets dpkg see /usr/local/bin
+# because of etc/apt/apt.conf.d/99sindhos-build-path (also build-time only).
 dir=/usr/local/share/sindhos/firmware
 url=
 for arg in "$@"; do

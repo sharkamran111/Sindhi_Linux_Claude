@@ -1,0 +1,4 @@
+// SindhOS build-time only (removed by hook 9990 before the image is packed).
+// apt runs dpkg with PATH=/usr/sbin:/usr/bin:/sbin:/bin by default, which
+// would skip the local-firmware wget helper in /usr/local/bin.
+DPkg::Path "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";

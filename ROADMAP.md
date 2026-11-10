@@ -57,7 +57,21 @@ fork, so builds run in a Debian 13 chroot.
 | `tools/sindhos-build.in` | The build command: copies the checkout into the chroot, runs `./build.sh`, puts the ISO and log in `out/`. Keeps the package cache between builds |
 | `tools/build.sh` | What you (or I) run to build. `--release` = xz squashfs (smaller, slower); default = zstd level 3 (fast test builds). `--clean` = remove old build leftovers, keep downloaded packages |
 | `cache/` (git-ignored) | Local copies of files the build would otherwise download: the Broadcom b43/b43legacy firmware, served to Debian's installer packages by a build-time `wget` helper (checksums still verified) |
+| `tools/ram-check.py` | Boots the ISO with a serial console, logs in after the desktop starts and prints `free -m` and the biggest processes as text |
 | `tools/boot-test.py` | Boots the ISO in QEMU (KVM, any RAM size, BIOS or UEFI), sends keys, saves PNG screenshots to `shots/`. Also used by CI. `--gui` for testing by hand |
+
+**Found in the Phase 0 test (v0.1 ISO):**
+- The desktop did not start at 1 GB. live-build's default hook
+  `9000-remove-gnome-icon-cache` deletes all GTK icon caches, so each GTK
+  program indexed Papirus's 43,000 icons itself (80–120 MB each). Fixed by hook
+  `9500-sindhos-icon-caches` (costs 9 MB disk). Checked on the v0.1 ISO by
+  rebuilding the caches at runtime: 1 GB desktop then runs with 606 MB used,
+  360 MB available
+- Still open for Phase 1: the initrd is 140 MB (202 MB of it is firmware for
+  AMD/NVIDIA GPUs and server network cards). It boots fine at 1 GB but slows
+  boot from USB; worth trimming
+- Idle desktop at 1 GB uses about 600 MB, above the 450 MB target. Biggest
+  remaining items: xfwm4 (compositor), ibus UI, Xorg
 
 Build speed: dpkg runs under `eatmydata` inside the image (no fsync, big
 win on a hard disk), and downloaded packages are kept between builds.
