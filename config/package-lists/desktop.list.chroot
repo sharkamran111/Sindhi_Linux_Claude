@@ -17,16 +17,14 @@ ristretto
 lightdm
 lightdm-gtk-greeter
 desktop-base
-greybird-gtk-theme
 
-# Mac-style look: dock, menu, icons, font, sound, calculator
-plank
+# SindhOS look: taskbar dock, menu, icons, font, sound, calculator
+xfce4-docklike-plugin
 xfce4-whiskermenu-plugin
 xfce4-pulseaudio-plugin
 papirus-icon-theme
 fonts-inter
 galculator
-dconf-cli
 
 # Boot splash
 plymouth

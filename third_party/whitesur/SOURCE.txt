@@ -1,1 +1,0 @@
-WhiteSur GTK theme (MIT), https://github.com/vinceliuice/WhiteSur-gtk-theme, release files from commit d578265

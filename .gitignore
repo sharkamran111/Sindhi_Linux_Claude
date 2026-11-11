@@ -14,7 +14,12 @@ config/chroot
 config/common
 config/source
 config/build
+# Assembled / rendered by build.sh from branding/ and third_party/
 config/includes.chroot/usr/share/themes/
+config/includes.chroot/usr/share/icons/
+config/includes.chroot/usr/share/backgrounds/
+config/includes.chroot/usr/share/plymouth/themes/sindhos/splash.png
+config/includes.chroot/etc/calamares/branding/sindhos/*.png
 out/
 shots/
 # Firmware copied from cache/ by build.sh at build time

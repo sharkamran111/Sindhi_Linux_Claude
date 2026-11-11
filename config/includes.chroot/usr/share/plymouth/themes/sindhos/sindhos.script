@@ -1,0 +1,13 @@
+// SindhOS boot splash: one full-screen image (rendered by build.sh), scaled to fit.
+Window.SetBackgroundTopColor(0.15, 0.20, 0.42);
+Window.SetBackgroundBottomColor(0.05, 0.08, 0.19);
+
+img = Image("splash.png");
+sw = Window.GetWidth();
+sh = Window.GetHeight();
+scale = Math.Min(sw / img.GetWidth(), sh / img.GetHeight());
+pic = img.Scale(img.GetWidth() * scale, img.GetHeight() * scale);
+
+splash = Sprite(pic);
+splash.SetX(Window.GetX() + sw / 2 - pic.GetWidth() / 2);
+splash.SetY(Window.GetY() + sh / 2 - pic.GetHeight() / 2);

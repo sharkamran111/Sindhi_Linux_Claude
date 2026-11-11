@@ -95,6 +95,11 @@ root through it. Fine on a personal build PC; skip the flag on a shared one.
 
 ## Phase 1 · Branding: SindhOS everywhere
 
+**Status (2026-11-11):** design direction **C "Sindh Taskbar"** chosen and
+built into the image config; SindhOS rename done in the sources (waiting for
+a build to test). Still to do in Phase 1: the Roman Sindhi transliteration
+engine (waiting for your answers in `keyboard/ROMAN-RULES-DRAFT.md`).
+
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,
   `PRETTY_NAME="SindhOS 0.2"`, `ID=sindhos`, `ID_LIKE=debian`, keep

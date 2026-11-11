@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=SindhOS
+Description=SindhOS emblem with a Sindhi welcome
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/sindhos
+ScriptFile=/usr/share/plymouth/themes/sindhos/sindhos.script

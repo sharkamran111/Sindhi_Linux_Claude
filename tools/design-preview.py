@@ -29,12 +29,10 @@ import time
 from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "branding", "theme"))
-import gen_xfwm4  # noqa: E402
 
 PORT = 8765
 APPEND = ("boot=live components quiet splash username=sindhi user-fullname=Sindhi "
-          "hostname=sindhi-linux keyboard-layouts=us console=tty0 console=ttyS0,115200")
+          "hostname=sindhos keyboard-layouts=us console=tty0 console=ttyS0,115200")
 APPS = "/usr/share/applications/"
 PINNED = ["thunar", "firefox-esr", "xfce4-terminal", "org.xfce.mousepad", "galculator",
           "sindhi-keyboard-guide", "xfce-settings-manager"]
@@ -245,8 +243,7 @@ def build_payload(directions):
     with tarfile.open(os.path.join(ROOT, "third_party/adw-gtk3/adw-gtk3v6.5.tar.xz")) as t:
         t.extractall(themes, filter="data")
     for th in ("SindhOS-Light", "SindhOS-Dark"):
-        shutil.copytree(os.path.join(ROOT, "branding/theme/gtk", th), os.path.join(themes, th))
-    gen_xfwm4.generate(themes)
+        shutil.copytree(os.path.join(ROOT, "branding/theme", th), os.path.join(themes, th))
     for f in ("topi.svg", "topi-small.svg"):
         shutil.copy(os.path.join(ROOT, "branding/topi", f), pay)
     deb = sorted(glob.glob(os.path.join(ROOT, "cache", "xfce4-docklike-plugin_*_amd64.deb")))

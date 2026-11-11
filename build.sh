@@ -42,15 +42,15 @@ lb config \
   --archive-areas "main contrib non-free-firmware" \
   --debian-installer none \
   --binary-images iso-hybrid \
-  --image-name sindhi-linux \
-  --iso-application "Sindhi Linux" \
-  --iso-publisher "Sindhi Linux project" \
-  --iso-volume "SINDHI_LINUX" \
+  --image-name sindhos \
+  --iso-application "SindhOS" \
+  --iso-publisher "SindhOS project" \
+  --iso-volume "SINDHOS" \
   --security true \
   --updates true \
   --debootstrap-options "--include=eatmydata" \
   $SQUASHFS \
-  --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhi-linux keyboard-layouts=us"
+  --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhos keyboard-layouts=us"
 
 # eatmydata inside the image chroot: dpkg/apt skip fsync, which is the slow
 # part on a hard disk. Only affects the build, not the installed system.
@@ -69,22 +69,47 @@ for f in broadcom-wl-6.30.163.46.tar.bz2 wl_apsta-3.130.20.0.o; do
   fi
 done
 
-# Mac-style theme (WhiteSur, MIT) unpacked into the image
-mkdir -p config/includes.chroot/usr/share/themes
-for t in third_party/whitesur/WhiteSur-*.tar.xz; do
-  tar -xJf "$t" -C config/includes.chroot/usr/share/themes
-done
+# ---- SindhOS look: themes, icons and artwork assembled into the image ----
+# Everything below is generated from branding/ and third_party/ (and
+# git-ignored), so the sources stay the single source of truth.
+INC=config/includes.chroot
+command -v rsvg-convert >/dev/null || { echo "rsvg-convert missing (apt install librsvg2-bin fonts-sil-lateef fonts-dejavu-core)" >&2; exit 1; }
+svg() { rsvg-convert -w "$2" -h "$3" -o "$4" "$1"; }
 
-# Boot menu branding: start from live-build's own templates, then swap in
-# the Sindhi Linux background and names.
+# Themes: adw-gtk3 base (LGPL) + SindhOS layers with their window decorations
+rm -rf "$INC/usr/share/themes"
+mkdir -p "$INC/usr/share/themes"
+tar -xJf third_party/adw-gtk3/adw-gtk3v*.tar.xz -C "$INC/usr/share/themes"
+cp -r branding/theme/SindhOS-Light branding/theme/SindhOS-Dark "$INC/usr/share/themes/"
+
+# Icons: SindhOS logo (ajrak emblem) and the topi for the menu button
+ICONS="$INC/usr/share/icons/hicolor/scalable/apps"
+rm -rf "$INC/usr/share/icons"
+mkdir -p "$ICONS"
+cp branding/logo.svg "$ICONS/sindhos.svg"
+cp branding/topi/topi-small.svg "$ICONS/sindhos-menu.svg"
+cp branding/topi/topi.svg "$ICONS/sindhos-topi.svg"
+
+# Artwork rendered from SVG: wallpaper (desktop + login), boot splash, installer
+mkdir -p "$INC/usr/share/backgrounds/sindhos"
+svg branding/wallpaper.svg 1920 1080 "$INC/usr/share/backgrounds/sindhos/wallpaper.png"
+svg branding/splash.svg 1920 1080 "$INC/usr/share/plymouth/themes/sindhos/splash.png"
+CAL="$INC/etc/calamares/branding/sindhos"
+svg branding/logo.svg 256 256 "$CAL/logo.png"
+svg branding/logo.svg 300 300 "$CAL/welcome.png"
+svg branding/splash.svg 640 360 "$CAL/slide1.png"
+
+# Boot menu: start from live-build's own templates, then swap in the
+# SindhOS background and name.
+rm -rf config/bootloaders
 mkdir -p config/bootloaders
-for dir in /usr/share/live/build/bootloaders/*; do
-  name=$(basename "$dir")
-  [ -d "config/bootloaders/$name" ] || cp -r "$dir" "config/bootloaders/$name"
-done
+cp -r /usr/share/live/build/bootloaders/* config/bootloaders/
+BOOTMENU=$(mktemp --suffix=.png)
+svg branding/bootmenu.svg 640 480 "$BOOTMENU"
 find config/bootloaders -name 'splash.svg*' -exec cp branding/bootmenu.svg {} \;
-find config/bootloaders -name 'splash.png' -exec cp branding/bootmenu.png {} \;
-grep -rlI 'Live system' config/bootloaders | xargs -r sed -i 's/Live system/Sindhi Linux/g'
+find config/bootloaders -name 'splash.png' -exec cp "$BOOTMENU" {} \;
+rm -f "$BOOTMENU"
+grep -rlI 'Live system' config/bootloaders | xargs -r sed -i 's/Live system/SindhOS/g'
 
 # eatmydata for the build tools on this side too (debootstrap, apt, mksquashfs)
 if command -v eatmydata >/dev/null 2>&1; then

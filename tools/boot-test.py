@@ -22,7 +22,7 @@ import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TYPED_FILE = "/tmp/sindhi-typed.txt"
-GUIDE = "/usr/share/sindhi-linux/keyboard-guide/index.html"  # renamed in Phase 1
+GUIDE = "/usr/share/sindhos/keyboard-guide/index.html"
 OVMF = ["/usr/share/OVMF/OVMF_CODE_4M.fd", "/usr/share/ovmf/OVMF.fd", "/usr/share/OVMF/OVMF_CODE.fd"]
 
 # Key names QEMU's "sendkey" understands, for characters that aren't a-z/0-9.

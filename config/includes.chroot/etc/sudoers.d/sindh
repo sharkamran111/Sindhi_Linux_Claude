@@ -1,2 +1,2 @@
-# Sindhi Linux: "sindh" is the same as "sudo". Both work, no warnings.
+# SindhOS: "sindh" is the same as "sudo". Both work, no warnings.
 Defaults passprompt="[sindh] password for %p: "

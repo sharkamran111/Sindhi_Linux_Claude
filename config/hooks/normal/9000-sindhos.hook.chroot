@@ -1,0 +1,78 @@
+#!/bin/sh
+# SindhOS setup, runs inside the image while it is being built.
+set -e
+
+VERSION=0.2
+URL=https://github.com/sharkamran111/Sindhi_Linux_Claude
+
+# 1. Languages: English, Sindhi (Arabic script) and Urdu
+for loc in "en_US.UTF-8 UTF-8" "sd_IN UTF-8" "ur_PK UTF-8"; do
+  sed -i "s/^# *${loc}/${loc}/" /etc/locale.gen
+  grep -q "^${loc}" /etc/locale.gen || echo "${loc}" >> /etc/locale.gen
+done
+locale-gen
+update-locale LANG=en_US.UTF-8
+
+# 2. System name. os-release belongs to base-files: divert Debian's copy so
+#    package upgrades don't put the Debian name back.
+dpkg-divert --quiet --local --rename --divert /usr/lib/os-release.debian --add /usr/lib/os-release
+cat > /usr/lib/os-release <<EOF
+PRETTY_NAME="SindhOS $VERSION"
+NAME="SindhOS"
+VERSION_ID="$VERSION"
+VERSION="$VERSION (Debian 13 trixie base)"
+VERSION_CODENAME=trixie
+DEBIAN_VERSION_FULL=$(cat /etc/debian_version)
+ID=sindhos
+ID_LIKE=debian
+HOME_URL="$URL"
+SUPPORT_URL="$URL/issues"
+BUG_REPORT_URL="$URL/issues"
+LOGO=sindhos
+EOF
+ln -sf ../usr/lib/os-release /etc/os-release
+for f in /etc/issue /etc/issue.net; do
+  dpkg-divert --quiet --local --rename --divert "$f.debian" --add "$f"
+done
+printf 'SindhOS %s \\n \\l\n\n' "$VERSION" > /etc/issue
+printf 'SindhOS %s\n' "$VERSION" > /etc/issue.net
+
+# 3. Boot splash: SindhOS emblem with the Sindhi welcome
+plymouth-set-default-theme sindhos
+update-initramfs -u -k all
+
+# 4. Wallpaper (desktop and login), also replacing XFCE's own defaults
+update-alternatives --install /usr/share/images/desktop-base/desktop-background \
+  desktop-background /usr/share/backgrounds/sindhos/wallpaper.png 100
+update-alternatives --set desktop-background /usr/share/backgrounds/sindhos/wallpaper.png
+for img in /usr/share/backgrounds/xfce/*; do
+  [ -f "$img" ] || continue
+  case "$img" in *.dpkg-divert|*.distrib) continue ;; esac
+  dpkg-divert --quiet --local --rename --add "$img"
+  cp /usr/share/backgrounds/sindhos/wallpaper.png "$img"
+done
+
+# 5. Installer: SindhOS branding, desktop icon name
+sed -i 's/^branding: .*/branding: sindhos/' /etc/calamares/settings.conf
+for f in $(grep -rl "Install Debian" /usr/share/applications 2>/dev/null); do
+  sed -i -e '/^Name\[/d' -e '/^GenericName\[/d' -e '/^Comment\[/d' \
+    -e 's/^Name=.*/Name=Install SindhOS/' \
+    -e 's/^Icon=.*/Icon=sindhos/' "$f"
+done
+
+# 6. User picture (menu header, login) for new users, including the live user
+cp /usr/share/pixmaps/sindhos.png /etc/skel/.face
+
+# 7. Keyboard defaults (IBus settings)
+glib-compile-schemas /usr/share/glib-2.0/schemas
+
+# 8. Super+Space opens app search. Insert before the Alt+F2 shortcut.
+KS=/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+if [ -f "$KS" ] && ! grep -q '&lt;Super&gt;space' "$KS"; then
+  sed -i '/name="&lt;Alt&gt;F2"/i <property name="\&lt;Super\&gt;space" type="string" value="xfce4-appfinder --collapsed"/>' "$KS"
+fi
+
+# 9. "sindh" works exactly like "sudo"
+ln -sf /usr/bin/sudo /usr/bin/sindh
+chmod 0440 /etc/sudoers.d/sindh
+visudo -c -f /etc/sudoers.d/sindh

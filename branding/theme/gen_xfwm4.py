@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Generate the SindhOS xfwm4 window themes (title bars and buttons).
 
-  python3 branding/theme/gen_xfwm4.py OUTDIR
+  python3 branding/theme/gen_xfwm4.py branding/theme
 
-writes OUTDIR/SindhOS-Light/xfwm4 and OUTDIR/SindhOS-Dark/xfwm4.
+writes branding/theme/SindhOS-Light/xfwm4 and .../SindhOS-Dark/xfwm4 (the
+generated PNGs are committed, so the build doesn't need Pillow).
 Original artwork, drawn with Pillow: flat title bar with rounded top corners,
 buttons on the right in the order minimize, maximize, close, shown as – □ ×.
 Use with the xfwm4 setting button_layout "|HMC".

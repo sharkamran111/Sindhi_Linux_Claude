@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=Sindhi Linux
-Description=Ajrak logo with a Sindhi welcome
-ModuleName=script
-
-[script]
-ImageDir=/usr/share/plymouth/themes/sindhi
-ScriptFile=/usr/share/plymouth/themes/sindhi/sindhi.script

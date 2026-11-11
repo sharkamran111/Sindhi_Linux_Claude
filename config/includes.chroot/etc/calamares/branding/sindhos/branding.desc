@@ -1,0 +1,34 @@
+# SindhOS installer branding (Calamares). Images are rendered by build.sh.
+---
+componentName:   sindhos
+welcomeStyleCalamares: true
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 800px,580px
+windowPlacement: center
+strings:
+    productName:         SindhOS
+    shortProductName:    SindhOS
+    version:             0.2
+    shortVersion:        0.2
+    versionedName:       SindhOS 0.2
+    shortVersionedName:  SindhOS 0.2
+    bootloaderEntryName: SindhOS
+    productUrl:          https://github.com/sharkamran111/Sindhi_Linux_Claude
+    supportUrl:          https://github.com/sharkamran111/Sindhi_Linux_Claude/issues
+    knownIssuesUrl:      https://github.com/sharkamran111/Sindhi_Linux_Claude/issues
+    releaseNotesUrl:     https://github.com/sharkamran111/Sindhi_Linux_Claude
+    donateUrl:           https://github.com/sharkamran111/Sindhi_Linux_Claude
+sidebar: widget
+navigation: widget
+images:
+    productLogo:         "logo.png"
+    productIcon:         "logo.png"
+    productWelcome:      "welcome.png"
+slideshow:               "show.qml"
+style:
+   SidebarBackground:    "#1F2A5A"
+   SidebarText:          "#F6F1E7"
+   SidebarTextCurrent:   "#FFFFFF"
+   SidebarBackgroundCurrent: "#9B1B1E"
+slideshowAPI: 2

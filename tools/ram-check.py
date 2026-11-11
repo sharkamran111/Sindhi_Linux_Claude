@@ -23,7 +23,7 @@ import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Same as the ISO's boot menu entry, plus the serial console.
 APPEND = ("boot=live components quiet splash username=sindhi user-fullname=Sindhi "
-          "hostname=sindhi-linux keyboard-layouts=us console=tty0 console=ttyS0,115200")
+          "hostname=sindhos keyboard-layouts=us console=tty0 console=ttyS0,115200")
 
 REPORT = r"""export TERM=dumb; echo live | sudo -S true >/dev/null 2>&1; echo ==RA""M==; free -m; \
 echo ==PROCESSES, private MB==; for p in $(ps -eo pid=); do \
