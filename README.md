@@ -9,7 +9,7 @@ Runs on everyday PCs: 2 GB RAM minimum, 4 GB recommended.
 
 - **Sindhi first:** Sindhi fonts (SIL Lateef, made for Sindhi), Sindhi and Urdu locales
 - **Roman Sindhi typing, Gboard-style:** type `sindhi boli` in English letters and get **سنڌي ٻولي**, with numbered suggestions when a spelling fits more than one word; your choices are remembered. Works offline from a 62,000-word Sindhi list
-- **Sindhi keyboard (key by key):** the second Sindhi keyboard, called just **Sindhi**: each key types one letter (`B U t Y` gives **سنڌي**). Switch between English, Roman Sindhi and Sindhi with **Ctrl+Space**, **Alt+Shift** or the taskbar button
+- **Sindhi keyboard (key by key):** the second Sindhi keyboard, called just **Sindhi**: each key types one letter (`B U t Y` gives **سنڌي**). **Ctrl+Space** goes English → Roman Sindhi → Sindhi; **Alt+Shift** back to the last one; or use the taskbar button
 - **Keyboard guide app:** *Sindhi Keyboard Guide* shows every key, the marks and punctuation, in Sindhi and English
 - **Its own look:** one indigo taskbar with the Sindhi **topi** as the menu button and logo, clean light windows with **– □ ×** at the top right, ajrak red as the accent colour (SindhOS theme on adw-gtk3, Papirus icons, Inter font)
 - **Welcomes you in Sindhi:** the boot screen says **ڀلي ڪري آيا**

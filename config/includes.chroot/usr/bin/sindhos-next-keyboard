@@ -1,0 +1,13 @@
+#!/bin/sh
+# SindhOS: Ctrl+Space cycles the keyboards in a fixed order:
+#   English -> Roman Sindhi -> Sindhi -> English
+# (IBus's own switch only flips between the last two keyboards used.)
+set -- xkb:us::eng sindhos-roman sindhos-sindhi
+current=$(ibus engine 2>/dev/null)
+next=$1
+found=
+for engine in "$@"; do
+  if [ -n "$found" ]; then next=$engine; break; fi
+  [ "$engine" = "$current" ] && found=1
+done
+exec ibus engine "$next"

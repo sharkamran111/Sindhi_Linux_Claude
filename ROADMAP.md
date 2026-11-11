@@ -120,8 +120,18 @@ Roman Sindhi tuned for WhatsApp-style typing (plain letters, unreliable vowel
 length): vowel-tolerant matching, ch = چ/ڇ, nj read both ways, written forms
 kept (ڀاءُ). Your 21 examples are test cases (`keyboard/roman/test_examples.py`):
 17 come out first from the rules alone, all 21 with the everyday-words list
-(`keyboard/roman/data/everyday.tsv`); 35 common words also first. Next: build,
-test Ctrl+Space across the three keyboards.
+(`keyboard/roman/data/everyday.tsv`); 35 common words also first.
+
+Phase 1 test of the 2026-11-11 build (QEMU, 2 GB and 4 GB): all boot-test
+steps pass at both sizes, no out-of-memory kills. Found and fixed (needs one
+more build):
+- Ctrl+Space only flipped between the last two keyboards (IBus behaviour), so
+  "Sindhi" wasn't reachable by tapping. Now Ctrl+Space runs
+  `sindhos-next-keyboard`: English → Roman Sindhi → Sindhi → English (checked
+  live); Alt+Shift stays IBus's quick flip
+- Idle RAM was 611 MB at 2 GB (680 MB at 4 GB, where the kernel itself uses
+  more), over the 600 MB target. IBus's emoji helper (24 MB) is now off; live
+  test: −52 MB. Expected about 560–590 MB at 2 GB, to be confirmed
 
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,

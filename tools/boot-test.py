@@ -93,11 +93,13 @@ def scenario(r):
     r.type("mousepad\n")
     r.shot("04-editor-english", 8)
 
-    # Roman Sindhi (Ctrl+Space = next keyboard): "sindhi boli " -> سنڌي ٻولي
+    # Ctrl+Space cycles English -> Roman Sindhi -> Sindhi -> English
     r.key("ctrl-spc", 2)
-    r.type("sindhi boli ")
+    r.type("sindhi boli ")                  # Roman Sindhi: سنڌي ٻولي
+    r.key("ctrl-spc", 2)
+    r.keys("shift-b", "shift-u", "t", "shift-y")   # Sindhi key by key: سنڌي
     r.shot("05-typed-sindhi", 1)
-    r.key("ctrl-spc", 2)
+    r.key("ctrl-spc", 2)                    # back to English
     # Save it, so the terminal step can show the exact letters as UTF-8 bytes
     r.key("ctrl-s", 3)
     r.type(TYPED_FILE + "\n")
@@ -122,7 +124,8 @@ def scenario(r):
     r.type("sindh whoami\n")
     r.type("cat /etc/os-release | head -3\n")
     r.type("free -m\n")
-    # Expected: d8 b3 d9 86 da 8c d9 8a 20 d9 bb d9 88 d9 84 d9 8a = سنڌي ٻولي
+    # Expected: d8 b3 d9 86 da 8c d9 8a 20 d9 bb d9 88 d9 84 d9 8a 20 d8 b3 d9 86 da 8c d9 8a
+    #           = سنڌي ٻولي سنڌي
     r.type("od -An -tx1 " + TYPED_FILE + " | head -2\n")
     r.shot("08-terminal-ram", 3)
 

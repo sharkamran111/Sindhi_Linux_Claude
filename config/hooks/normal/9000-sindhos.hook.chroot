@@ -73,12 +73,23 @@ python3 /usr/lib/sindhos/roman/translit.py build \
   /usr/share/sindhos/roman/sd-words.tsv /usr/share/sindhos/roman/index.sqlite
 rm -rf /usr/lib/sindhos/roman/__pycache__
 glib-compile-schemas /usr/share/glib-2.0/schemas
+# IBus without its emoji picker helper (saves about 24 MB at idle)
+RC=/usr/share/im-config/data/21_ibus.rc
+dpkg-divert --quiet --local --rename --divert "$RC.debian" --add "$RC"
+sed 's|/usr/bin/ibus-daemon --daemonize --xim$|/usr/bin/ibus-daemon --daemonize --xim --emoji-extension=disable|' \
+  "$RC.debian" > "$RC"
+grep -q -- '--emoji-extension=disable' "$RC"
 
-# 8. Super+Space opens app search. Insert before the Alt+F2 shortcut.
+# 8. Shortcuts, inserted before the Alt+F2 one:
+#    Super+Space = app search, Ctrl+Space = next keyboard (fixed order)
 KS=/etc/xdg/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 if [ -f "$KS" ] && ! grep -q '&lt;Super&gt;space' "$KS"; then
   sed -i '/name="&lt;Alt&gt;F2"/i <property name="\&lt;Super\&gt;space" type="string" value="xfce4-appfinder --collapsed"/>' "$KS"
 fi
+if [ -f "$KS" ] && ! grep -q 'sindhos-next-keyboard' "$KS"; then
+  sed -i '/name="&lt;Alt&gt;F2"/i <property name="\&lt;Primary\&gt;space" type="string" value="sindhos-next-keyboard"/>' "$KS"
+fi
+grep -q 'sindhos-next-keyboard' "$KS"
 
 # 9. "sindh" works exactly like "sudo"
 ln -sf /usr/bin/sudo /usr/bin/sindh
