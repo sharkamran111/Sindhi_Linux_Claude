@@ -21,6 +21,7 @@ esac
 
 # Keep the downloaded package cache between local builds (much faster).
 lb clean >/dev/null 2>&1 || true
+rm -f ./*.iso    # also images built under an older name
 
 # The cached base system must contain eatmydata (see below); an older cache
 # without it is thrown away and rebuilt from the cached .deb files.
