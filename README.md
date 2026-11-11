@@ -11,7 +11,7 @@ Runs on everyday PCs: 2 GB RAM minimum, 4 GB recommended.
 - **Roman Sindhi typing, Gboard-style:** type `sindhi boli` in English letters and get **سنڌي ٻولي**, with numbered suggestions when a spelling fits more than one word; your choices are remembered. Works offline from a 62,000-word Sindhi list
 - **Sindhi keyboard (key by key):** the second Sindhi keyboard, called just **Sindhi**: each key types one letter (`B U t Y` gives **سنڌي**). **Ctrl+Space** goes English → Roman Sindhi → Sindhi; **Alt+Shift** back to the last one; or use the taskbar button
 - **Keyboard guide app:** *Sindhi Keyboard Guide* shows every key, the marks and punctuation, in Sindhi and English
-- **Its own look:** one indigo taskbar with the Sindhi **topi** as the menu button and logo, clean light windows with **– □ ×** at the top right, ajrak red as the accent colour (SindhOS theme on adw-gtk3, Papirus icons, Inter font)
+- **Its own look:** one indigo taskbar with a Sindhi **topi** as the menu button in the bottom-left corner (like the Windows Start button), clean light windows with **– □ ×** at the top right, ajrak red as the accent colour (SindhOS theme on adw-gtk3, Papirus icons, Inter font)
 - **Welcomes you in Sindhi:** the boot screen says **ڀلي ڪري آيا**
 - **Runs on low-end machines:** XFCE desktop and a small set of apps, idle desktop under 600 MB; tested in QEMU with 2 GB and 4 GB RAM
 - **A normal Linux underneath:** login with your username and password, `sudo`, `su`, terminal, Firefox, **Super+Space** to search apps

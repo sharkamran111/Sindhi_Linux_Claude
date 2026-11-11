@@ -137,6 +137,11 @@ more build):
   taskbar shows SindhOS's own indicator (xfce4-genmon-plugin) reading
   سنڌي / Roman Sindhi / English, and a click opens a plain GTK menu that
   closes on an outside click (checked live)
+- New topi (approved 2026-11-11): original 3/4-view Sindhi topi drawn by
+  `branding/topi/gen_topi.py` (arched front, maroon/navy, white dots, star
+  medallion, diamond/cross patterns). Used only as the menu button, on a
+  cream tile, bottom-left like the Windows Start button; boot menu, splash,
+  About and installer keep the ajrak emblem
 
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,
