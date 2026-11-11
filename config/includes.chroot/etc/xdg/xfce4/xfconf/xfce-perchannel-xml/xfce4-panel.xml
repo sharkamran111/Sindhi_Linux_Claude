@@ -10,7 +10,7 @@
       <property name="length" type="uint" value="100"/>
       <property name="position-locked" type="bool" value="true"/>
       <property name="size" type="uint" value="44"/>
-      <property name="icon-size" type="uint" value="24"/>
+      <property name="icon-size" type="uint" value="28"/>
       <property name="background-style" type="uint" value="1"/>
       <property name="background-rgba" type="array">
         <value type="double" value="0.122"/>
@@ -47,7 +47,22 @@
       <property name="square-icons" type="bool" value="true"/>
     </property>
     <property name="plugin-6" type="string" value="pulseaudio"/>
-    <property name="plugin-7" type="string" value="actions"/>
+    <property name="plugin-7" type="string" value="actions">
+      <!-- one icon that opens the Log out / Restart / Shut down dialog -->
+      <property name="appearance" type="uint" value="0"/>
+      <property name="items" type="array">
+        <value type="string" value="+logout-dialog"/>
+        <value type="string" value="-lock-screen"/>
+        <value type="string" value="-switch-user"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="-suspend"/>
+        <value type="string" value="-hibernate"/>
+        <value type="string" value="-hybrid-sleep"/>
+        <value type="string" value="-shutdown"/>
+        <value type="string" value="-restart"/>
+        <value type="string" value="-logout"/>
+      </property>
+    </property>
     <property name="plugin-8" type="string" value="docklike"/>
     <property name="plugin-9" type="string" value="separator">
       <property name="expand" type="bool" value="false"/>

@@ -81,12 +81,13 @@
   <h2><span>How to switch</span><span class="sd">ٻولي ڪيئن مٽايو</span></h2>
   <div class="card steps">
     <div>
-      <p>Press <kbd>Ctrl</kbd> + <kbd>Space</kbd> or <kbd>Alt</kbd> + <kbd>Shift</kbd> to switch between English and Sindhi.</p>
-      <p>Or click the language button in the top bar, next to the clock.</p>
-      <p>Hold <kbd>Shift</kbd> for the second set of letters.</p>
+      <p>Press <kbd>Ctrl</kbd> + <kbd>Space</kbd> or <kbd>Alt</kbd> + <kbd>Shift</kbd> to switch between English, Roman Sindhi and Sindhi.</p>
+      <p>Or click the language button in the taskbar, next to the clock.</p>
+      <p><b>Roman Sindhi:</b> type words in English letters, <kbd>sindhi boli</kbd> gives <span class="sd">سنڌي ٻولي</span>. Press <kbd>Space</kbd> for the first suggestion or <kbd>1</kbd>–<kbd>9</kbd> for another.</p>
+      <p><b>Sindhi</b> (this page): each key types one letter. Hold <kbd>Shift</kbd> for the second set of letters.</p>
     </div>
     <div class="sd">
-      <p>انگريزي ۽ سنڌي جي وچ ۾ مٽائڻ لاءِ <kbd>Ctrl</kbd> + <kbd>Space</kbd> يا <kbd>Alt</kbd> + <kbd>Shift</kbd> دٻايو.</p>
+      <p>انگريزي، رومن سنڌي ۽ سنڌي جي وچ ۾ مٽائڻ لاءِ <kbd>Ctrl</kbd> + <kbd>Space</kbd> يا <kbd>Alt</kbd> + <kbd>Shift</kbd> دٻايو.</p>
       <p>يا ٽاسڪ بار تي ٻوليءَ واري بٽڻ تي ڪلڪ ڪريو.</p>
       <p>ٻين اکرن لاءِ <kbd>Shift</kbd> دٻائي رکو.</p>
     </div>
@@ -121,7 +122,7 @@
   <h2><span>Try it</span><span class="sd">هتي لکي ڏسو</span></h2>
   <div class="card">
     <textarea class="sd" dir="rtl" placeholder="سنڌي لکو…"></textarea>
-    <p class="note">Switch to Sindhi and type here. Example: <kbd>B</kbd> <kbd>U</kbd> <kbd>t</kbd> <kbd>Y</kbd> gives <span class="sd">سنڌي</span>.
+    <p class="note">Switch to Sindhi (key by key) and type here. Example: <kbd>B</kbd> <kbd>U</kbd> <kbd>t</kbd> <kbd>Y</kbd> gives <span class="sd">سنڌي</span>.
     The letter <span class="sd">ژ</span> is not on this layout yet.</p>
   </div>
 </main>

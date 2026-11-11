@@ -37,6 +37,11 @@ done
 printf 'SindhOS %s \\n \\l\n\n' "$VERSION" > /etc/issue
 printf 'SindhOS %s\n' "$VERSION" > /etc/issue.net
 
+# 2b. Time zone: Pakistan (installed systems; the live system gets it from
+#     the timezone= boot option, the installer from its locale.conf)
+ln -sf /usr/share/zoneinfo/Asia/Karachi /etc/localtime
+echo Asia/Karachi > /etc/timezone
+
 # 3. Boot splash: SindhOS emblem with the Sindhi welcome
 plymouth-set-default-theme sindhos
 update-initramfs -u -k all

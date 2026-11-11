@@ -60,13 +60,13 @@ def background(w, h):
 def wallpaper():
     w, h = 1920, 1080
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">'
-            + background(w, h) + medallion(1560, 760, 470, 0.06) + medallion(250, 170, 150, 0.035) + "</svg>")
+            + background(w, h) + medallion(1480, 470, 330, 0.07) + medallion(250, 170, 130, 0.035) + "</svg>")
 
 
 def splash():
     w, h = 1920, 1080
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">'
-            + background(w, h) + medallion(1560, 760, 470, 0.05)
+            + background(w, h) + medallion(1480, 470, 330, 0.05)
             + emblem(960 - 110, 300, 220, "s")
             + f'<text x="960" y="660" font-family="Lateef" font-weight="bold" font-size="104" fill="{CREAM}" '
               f'text-anchor="middle" direction="rtl">{WELCOME_SD}</text>'

@@ -32,7 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PORT = 8765
 APPEND = ("boot=live components quiet splash username=sindhi user-fullname=Sindhi "
-          "hostname=sindhos keyboard-layouts=us console=tty0 console=ttyS0,115200")
+          "hostname=sindhos keyboard-layouts=us timezone=Asia/Karachi console=tty0 console=ttyS0,115200")
 APPS = "/usr/share/applications/"
 PINNED = ["thunar", "firefox-esr", "xfce4-terminal", "org.xfce.mousepad", "galculator",
           "sindhi-keyboard-guide", "xfce-settings-manager"]
@@ -118,7 +118,22 @@ def panel_xml(d):
       <property name="square-icons" type="bool" value="true"/>
     </property>''',
         6: '''    <property name="plugin-6" type="string" value="pulseaudio"/>''',
-        7: '''    <property name="plugin-7" type="string" value="actions"/>''',
+        7: '''    <property name="plugin-7" type="string" value="actions">
+      <!-- one icon that opens the Log out / Restart / Shut down dialog -->
+      <property name="appearance" type="uint" value="0"/>
+      <property name="items" type="array">
+        <value type="string" value="+logout-dialog"/>
+        <value type="string" value="-lock-screen"/>
+        <value type="string" value="-switch-user"/>
+        <value type="string" value="-separator"/>
+        <value type="string" value="-suspend"/>
+        <value type="string" value="-hibernate"/>
+        <value type="string" value="-hybrid-sleep"/>
+        <value type="string" value="-shutdown"/>
+        <value type="string" value="-restart"/>
+        <value type="string" value="-logout"/>
+      </property>
+    </property>''',
         8: '''    <property name="plugin-8" type="string" value="docklike"/>''',
         9: '''    <property name="plugin-9" type="string" value="separator">
       <property name="expand" type="bool" value="false"/>
@@ -132,7 +147,7 @@ def panel_xml(d):
         used = [1, 2, 3, 4, 5, 6, 7, 8]
         pids = [1, 2]
     else:
-        panels = [panel(1, "p=8;x=0;y=0", 100, 44, 24, d["bar"], [1, 9, 8, 2, 5, 6, 3, 7])]
+        panels = [panel(1, "p=8;x=0;y=0", 100, 44, 28, d["bar"], [1, 9, 8, 2, 5, 6, 3, 7])]
         used = [1, 2, 3, 5, 6, 7, 8, 9]
         pids = [1]
     ids = "\n".join(f'    <value type="int" value="{i}"/>' for i in pids)
@@ -153,7 +168,8 @@ def panel_xml(d):
 
 
 DOCKLIKE_RC = "[user]\npinned=" + ";".join(APPS + a + ".desktop" for a in PINNED) + ";\n" + \
-    "indicatorOrientation=0\nindicatorStyle=1\ninactiveIndicatorStyle=1\n" \
+    "forceIconSize=true\niconSize=30\n" \
+    "indicatorOrientation=0\nindicatorStyle=0\ninactiveIndicatorStyle=0\n" \
     "indicatorColorFromTheme=false\nindicatorColor=rgb(155,27,30)\ninactiveColor=rgb(155,27,30)\n" \
     "noWindowsListIfSingle=true\nshowPreviews=false\n"
 

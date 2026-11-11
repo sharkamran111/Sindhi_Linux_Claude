@@ -1,8 +1,10 @@
 [user]
 pinned=/usr/share/applications/thunar.desktop;/usr/share/applications/firefox-esr.desktop;/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/org.xfce.mousepad.desktop;/usr/share/applications/galculator.desktop;/usr/share/applications/sindhi-keyboard-guide.desktop;/usr/share/applications/xfce-settings-manager.desktop;
+forceIconSize=true
+iconSize=30
 indicatorOrientation=0
-indicatorStyle=1
-inactiveIndicatorStyle=1
+indicatorStyle=0
+inactiveIndicatorStyle=0
 indicatorColorFromTheme=false
 indicatorColor=rgb(155,27,30)
 inactiveColor=rgb(155,27,30)

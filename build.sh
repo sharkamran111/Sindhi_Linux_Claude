@@ -51,7 +51,7 @@ lb config \
   --updates true \
   --debootstrap-options "--include=eatmydata" \
   $SQUASHFS \
-  --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhos keyboard-layouts=us"
+  --bootappend-live "boot=live components quiet splash username=sindhi user-fullname=Sindhi hostname=sindhos keyboard-layouts=us timezone=Asia/Karachi"
 
 # eatmydata inside the image chroot: dpkg/apt skip fsync, which is the slow
 # part on a hard disk. Only affects the build, not the installed system.
@@ -91,15 +91,16 @@ cp branding/logo.svg "$ICONS/sindhos.svg"
 cp branding/topi/topi-small.svg "$ICONS/sindhos-menu.svg"
 cp branding/topi/topi.svg "$ICONS/sindhos-topi.svg"
 
-# Roman Sindhi input method (keyboard/roman): engine, word list, IBus component.
+# SindhOS keyboards (keyboard/roman): Roman Sindhi + Sindhi key by key, one
+# IBus engine process; word list and IBus component.
 # The lookup index is built inside the image by hook 9000-sindhos.
 ROMAN_LIB="$INC/usr/lib/sindhos/roman"
 ROMAN_SHARE="$INC/usr/share/sindhos/roman"
 rm -rf "$ROMAN_LIB" "$ROMAN_SHARE"
 mkdir -p "$ROMAN_LIB" "$ROMAN_SHARE" "$INC/usr/share/ibus/component"
 cp keyboard/roman/rules.py keyboard/roman/translit.py keyboard/roman/composer.py \
-   keyboard/roman/engine.py keyboard/roman/ibus-engine-sindhos-roman "$ROMAN_LIB/"
-cp keyboard/roman/data/sd-words.tsv keyboard/roman/roman-icon.svg "$ROMAN_SHARE/"
+   keyboard/roman/engine.py keyboard/roman/ibus-engine-sindhos-roman keyboard/layout.py "$ROMAN_LIB/"
+cp keyboard/roman/data/sd-words.tsv keyboard/roman/roman-icon.svg keyboard/roman/sindhi-icon.svg "$ROMAN_SHARE/"
 cp keyboard/roman/sindhos-roman.xml "$INC/usr/share/ibus/component/"
 
 # Artwork rendered from SVG: wallpaper (desktop + login), boot splash, installer

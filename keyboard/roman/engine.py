@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""SindhOS Roman Sindhi input method for IBus.
+"""SindhOS keyboards for IBus, one process, two keyboards:
 
-Type Sindhi in Roman letters: "sindhi boli" -> سنڌي ٻولي, with a list of
-alternatives. Installed as /usr/lib/sindhos/roman/engine.py and started by
-IBus through /usr/share/ibus/component/sindhos-roman.xml.
+  Roman Sindhi  (sindhos-roman)  type "sindhi boli" -> سنڌي ٻولي, with suggestions
+  Sindhi        (sindhos-sindhi) key by key: each key types one Sindhi letter
+                                 (layout in keyboard/layout.py)
+
+Installed as /usr/lib/sindhos/roman/engine.py, started by IBus through
+/usr/share/ibus/component/sindhos-roman.xml.
 """
 import os
 import sys
@@ -14,9 +17,13 @@ from gi.repository import GLib, IBus  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import composer  # noqa: E402
+import layout  # noqa: E402
 import translit  # noqa: E402
 
 ENGINE_NAME = "sindhos-roman"
+KEY_ENGINE_NAME = "sindhos-sindhi"
+KEYMAP = {**layout.LOWER, **layout.UPPER,
+          **{k: v for k, v, *_ in layout.MARKS}, **{k: v for k, v, *_ in layout.PUNCT}}
 BUS_NAME = "org.sindhos.Roman"
 INDEX = os.environ.get("SINDHOS_ROMAN_INDEX", "/usr/share/sindhos/roman/index.sqlite")
 USER_DB = os.path.join(GLib.get_user_data_dir(), "sindhos", "roman-picks.sqlite")
@@ -95,6 +102,23 @@ class Engine(IBus.Engine):
         self.update_lookup_table(self.table, bool(c.cands))
 
 
+class KeyEngine(IBus.Engine):
+    """Sindhi key by key: each key commits its Sindhi letter directly."""
+    __gtype_name__ = "SindhosSindhiEngine"
+
+    def __init__(self, connection, object_path):
+        super().__init__(connection=connection, object_path=object_path)
+
+    def do_process_key_event(self, keyval, keycode, state):
+        if state & (IBus.ModifierType.RELEASE_MASK | MODS):
+            return False
+        text = KEYMAP.get(IBus.keyval_to_unicode(keyval) or "")
+        if not text:
+            return False
+        self.commit_text(IBus.Text.new_from_string(text))
+        return True
+
+
 class Factory(IBus.Factory):
     def __init__(self, bus):
         self.bus = bus
@@ -103,10 +127,13 @@ class Factory(IBus.Factory):
         super().__init__(connection=bus.get_connection(), object_path=IBus.PATH_FACTORY)
 
     def do_create_engine(self, engine_name):
-        if engine_name != ENGINE_NAME:
-            return None
         self.count += 1
-        return Engine(self.bus.get_connection(), f"/org/sindhos/Roman/Engine/{self.count}", self.index)
+        path = f"/org/sindhos/Roman/Engine/{self.count}"
+        if engine_name == ENGINE_NAME:
+            return Engine(self.bus.get_connection(), path, self.index)
+        if engine_name == KEY_ENGINE_NAME:
+            return KeyEngine(self.bus.get_connection(), path)
+        return None
 
 
 def main():

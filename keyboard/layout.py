@@ -1,5 +1,5 @@
-# Roman Sindhi keyboard layout: single source of truth.
-# Generates the IBus/m17n input method and the keyboard guide data.
+# "Sindhi" keyboard (key by key): single source of truth.
+# Used by the SindhOS IBus engine (keyboard/roman/engine.py) and the keyboard guide (gen.py).
 LOWER = {
  "q":"ح","w":"ڍ","e":"پ","r":"خ","t":"ڌ","y":"ر","u":"ڏ","i":"ٺ","o":"چ","p":"ڇ",
  "a":"ا","s":"د","d":"ڀ","f":"ت","g":"ٿ","h":"ٽ","j":"ث","k":"ج","l":"ڄ",

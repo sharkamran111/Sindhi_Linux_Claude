@@ -53,12 +53,10 @@ xdg-utils
 locales
 keyboard-configuration
 ibus
-ibus-m17n
 python3-gi
 gir1.2-ibus-1.0
 ibus-gtk3
 im-config
-m17n-db
 fonts-sil-lateef
 fonts-sil-scheherazade
 fonts-noto-core

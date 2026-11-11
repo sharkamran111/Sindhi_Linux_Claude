@@ -106,8 +106,16 @@ running session): `sindhi boli asaan jee sunyaaNap aahe.` → سنڌي ٻولي 
 سڃاڻپ آهي۔ with a numbered candidate list, choices remembered, about 35 MB RAM.
 Word list: 62,048 words from Sindhi Wikipedia (CC BY-SA 4.0). Spelling rules
 are still the draft in `keyboard/roman/rules.py`, waiting for your
-corrections (`keyboard/ROMAN-RULES-DRAFT.md`). Next: build, test Ctrl+Space
-across the three keyboards, update the keyboard guide.
+corrections (`keyboard/ROMAN-RULES-DRAFT.md`).
+
+Fixes after your QEMU test (2026-11-11), each checked live in QEMU: dock
+icons 30 px with a red bar under open apps (nothing cut off), seamless
+opaque taskbar, time zone Asia/Karachi (live, installed, installer), one
+keyboard indicator (the "Sindhi" label was the log-out button showing the
+user name; now a single icon), keyboards named "Roman Sindhi" and "Sindhi"
+(both served by the SindhOS engine; ibus-m17n removed), topi menu button on
+a cream tile at 28 px, wallpaper medallion above the taskbar. Next: build,
+test Ctrl+Space across the three keyboards.
 
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- SindhOS Roman Sindhi input method (installed in /usr/share/ibus/component) -->
+<!-- SindhOS keyboards: Roman Sindhi and Sindhi (installed in /usr/share/ibus/component) -->
 <component>
   <name>org.sindhos.Roman</name>
-  <description>SindhOS Roman Sindhi input method</description>
+  <description>SindhOS Sindhi keyboards</description>
   <exec>/usr/lib/sindhos/roman/ibus-engine-sindhos-roman --ibus</exec>
   <version>0.1</version>
   <author>SindhOS project</author>
@@ -17,10 +17,22 @@
       <author>SindhOS project</author>
       <icon>/usr/share/sindhos/roman/roman-icon.svg</icon>
       <layout>us</layout>
-      <longname>Roman Sindhi · رومن سنڌي</longname>
+      <longname>Roman Sindhi</longname>
       <description>Type Sindhi in Roman letters: sindhi boli → سنڌي ٻولي</description>
       <rank>80</rank>
       <symbol>سن</symbol>
+    </engine>
+    <engine>
+      <name>sindhos-sindhi</name>
+      <language>sd</language>
+      <license>See /usr/share/doc/sindhos</license>
+      <author>SindhOS project</author>
+      <icon>/usr/share/sindhos/roman/sindhi-icon.svg</icon>
+      <layout>us</layout>
+      <longname>Sindhi</longname>
+      <description>Sindhi key by key: each key types one Sindhi letter (see Sindhi Keyboard Guide)</description>
+      <rank>70</rank>
+      <symbol>س</symbol>
     </engine>
   </engines>
 </component>

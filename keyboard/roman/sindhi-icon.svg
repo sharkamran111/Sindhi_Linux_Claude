@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<!-- SindhOS "Sindhi" (key by key) keyboard icon -->
+<rect width="64" height="64" rx="12" fill="#9e1b20"/>
+<rect x="3" y="3" width="58" height="58" rx="10" fill="none" stroke="#f4ead5" stroke-width="2" stroke-dasharray="2 4"/>
+<text x="32" y="42" font-family="Lateef" font-weight="bold" font-size="34" fill="#f4ead5" text-anchor="middle" direction="rtl">سنڌي</text>
+</svg>
