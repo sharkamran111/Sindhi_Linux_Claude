@@ -1,7 +1,7 @@
 # SindhOS · سنڌ او ايس
 
 A light Linux for everyday laptops, with Sindhi built in from the first boot.
-Made for low-end PCs with 1–2 GB of RAM.
+Runs on everyday PCs: 2 GB RAM minimum, 4 GB recommended.
 
 ![SindhOS](branding/splash.svg)
 
@@ -12,7 +12,7 @@ Made for low-end PCs with 1–2 GB of RAM.
 - **Keyboard guide app:** *Sindhi Keyboard Guide* shows every key, the marks and punctuation, in Sindhi and English
 - **Its own look:** one indigo taskbar with the Sindhi **topi** as the menu button, clean light windows with **– □ ×** at the top right, ajrak red as the accent colour (SindhOS theme on adw-gtk3, Papirus icons, Inter font)
 - **Welcomes you in Sindhi:** the boot screen says **ڀلي ڪري آيا**
-- **Runs on low-end machines:** XFCE desktop and a small set of apps; tested in QEMU with 1 GB and 2 GB RAM
+- **Runs on low-end machines:** XFCE desktop and a small set of apps, idle desktop under 600 MB; tested in QEMU with 2 GB and 4 GB RAM
 - **A normal Linux underneath:** login with your username and password, `sudo`, `su`, terminal, Firefox, **Super+Space** to search apps
 - **`sindh` = `sudo`:** type `sindh apt update` or `sudo apt update`, both work the same, no warnings
 - **Built on Debian 13:** security updates come straight from Debian, so the system stays safe for years
@@ -49,10 +49,10 @@ tools/build.sh                     # test build (fast zstd), ISO and log in out/
 tools/build.sh --release           # release build (xz, smaller ISO)
 tools/build.sh --clean             # remove old build leftovers, keep downloads
 tools/boot-test.py                 # boots it in QEMU, screenshots in shots/
-tools/boot-test.py --mem 1024      # low-end check
+tools/boot-test.py --mem 4096      # recommended-size check
 tools/boot-test.py --uefi          # UEFI boot
 tools/boot-test.py --gui           # try it yourself in a window
-tools/ram-check.py --mem 1024      # memory use as text (serial console)
+tools/ram-check.py                 # memory use as text at 2 GB (serial console)
 ```
 
 Files in `cache/` (not in git) are used instead of downloads during the build:

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Measure SindhOS memory use as text, through a serial console.
 
-  tools/ram-check.py                 # newest ISO in out/, 1024 MB
-  tools/ram-check.py --mem 2048 --settle 120 --iso X.iso
+  tools/ram-check.py                 # newest ISO in out/, 2048 MB
+  tools/ram-check.py --mem 4096 --settle 120 --iso X.iso
 
 Boots the ISO's own kernel and initrd in QEMU with an extra serial console,
 waits for the desktop to start, logs in on the serial line (user sindhi,
@@ -67,7 +67,7 @@ class Serial:
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--iso")
-    ap.add_argument("--mem", type=int, default=1024)
+    ap.add_argument("--mem", type=int, default=2048)
     ap.add_argument("--settle", type=int, default=150, help="seconds to let the desktop start (default 150)")
     a = ap.parse_args()
 
