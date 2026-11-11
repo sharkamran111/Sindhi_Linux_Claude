@@ -109,8 +109,8 @@ def scenario(r):
     r.type("firefox-esr " + GUIDE + "\n")
     r.key("ret", 2)
     r.shot("06-keyboard-guide", 30)
-    r.key("ctrl-q", 3)          # with 2 tabs open Firefox asks "Quit Firefox?",
-    r.key("ret", 3)             # Enter = "Quit Firefox" (harmless if it didn't ask)
+    r.key("ctrl-q", 8)          # with 2 tabs open Firefox asks "Quit Firefox?" (slow at 1 GB),
+    r.key("ret", 6)             # Enter = "Quit Firefox" (harmless if it didn't ask)
 
     # Spotlight-style search
     r.key("meta_l-spc", 3)

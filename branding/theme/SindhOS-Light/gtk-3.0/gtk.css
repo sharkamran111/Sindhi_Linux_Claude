@@ -24,4 +24,3 @@
 @define-color panel_bg_color #F8F7F4;
 @define-color panel_fg_color #22232A;
 .xfce4-panel { font-weight: 500; }
-.xfce4-panel.background { border-radius: 12px; }

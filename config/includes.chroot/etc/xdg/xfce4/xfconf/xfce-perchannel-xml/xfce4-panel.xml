@@ -16,7 +16,7 @@
         <value type="double" value="0.122"/>
         <value type="double" value="0.165"/>
         <value type="double" value="0.353"/>
-        <value type="double" value="0.97"/>
+        <value type="double" value="1.0"/>
       </property>
       <property name="plugin-ids" type="array">
         <value type="int" value="1"/>

@@ -68,7 +68,7 @@ DIRECTIONS = {
         gtk="SindhOS-Light", wm="SindhOS-Light", icons="Papirus",
         wallpaper=("#26346E", "#121831", 0.12),
         layout="taskbar",
-        bar=dict(rgba=(0.122, 0.165, 0.353, 0.97), dark=True, size=44),
+        bar=dict(rgba=(0.122, 0.165, 0.353, 1.0), dark=True, size=44),
     ),
 }
 
