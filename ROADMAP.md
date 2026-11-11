@@ -96,9 +96,12 @@ root through it. Fine on a personal build PC; skip the flag on a shared one.
 ## Phase 1 · Branding: SindhOS everywhere
 
 **Status (2026-11-11):** design direction **C "Sindh Taskbar"** chosen and
-built into the image config; SindhOS rename done in the sources (waiting for
-a build to test). Still to do in Phase 1: the Roman Sindhi transliteration
-engine (waiting for your answers in `keyboard/ROMAN-RULES-DRAFT.md`).
+built. SindhOS rename and design C tested in QEMU (build of 2026-11-11):
+boot menu, splash, login screen, About (SindhOS 0.2), installer branding,
+menu, taskbar dock all OK. Idle RAM at 1 GB: **539 MB used, 427 MB available**
+(Phase 0: 619 / 347), mainly from dropping Plank. Still to do in Phase 1: the
+Roman Sindhi transliteration engine (waiting for your answers in
+`keyboard/ROMAN-RULES-DRAFT.md`).
 
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,
