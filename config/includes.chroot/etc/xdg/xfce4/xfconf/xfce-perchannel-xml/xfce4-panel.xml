@@ -23,6 +23,7 @@
         <value type="int" value="9"/>
         <value type="int" value="8"/>
         <value type="int" value="2"/>
+        <value type="int" value="10"/>
         <value type="int" value="5"/>
         <value type="int" value="6"/>
         <value type="int" value="3"/>
@@ -68,5 +69,6 @@
       <property name="expand" type="bool" value="false"/>
       <property name="style" type="uint" value="0"/>
     </property>
+    <property name="plugin-10" type="string" value="genmon"/>
   </property>
 </channel>

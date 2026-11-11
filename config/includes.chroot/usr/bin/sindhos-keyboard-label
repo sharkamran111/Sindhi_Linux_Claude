@@ -1,0 +1,11 @@
+#!/bin/sh
+# SindhOS taskbar keyboard indicator (xfce4-genmon-plugin): shows the active
+# keyboard as سنڌي / Roman Sindhi / English; click opens the keyboard menu.
+case "$(ibus engine 2>/dev/null)" in
+  sindhos-sindhi) label="سنڌي" ;;
+  sindhos-roman)  label="Roman Sindhi" ;;
+  *)              label="English" ;;
+esac
+printf '<txt> %s </txt>' "$label"
+printf '<tool>Keyboard: %s\nCtrl+Space: next keyboard</tool>' "$label"
+printf '<txtclick>sindhos-keyboard-menu</txtclick>'

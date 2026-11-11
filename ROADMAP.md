@@ -132,6 +132,11 @@ more build):
 - Idle RAM was 611 MB at 2 GB (680 MB at 4 GB, where the kernel itself uses
   more), over the 600 MB target. IBus's emoji helper (24 MB) is now off; live
   test: −52 MB. Expected about 560–590 MB at 2 GB, to be confirmed
+- Your own test: the IBus tray menu didn't close on an outside click and its
+  labels repeated ("Sindhi - Sindhi"). IBus's tray icon is now hidden; the
+  taskbar shows SindhOS's own indicator (xfce4-genmon-plugin) reading
+  سنڌي / Roman Sindhi / English, and a click opens a plain GTK menu that
+  closes on an outside click (checked live)
 
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,

@@ -135,6 +135,7 @@ def panel_xml(d):
       </property>
     </property>''',
         8: '''    <property name="plugin-8" type="string" value="docklike"/>''',
+        10: '''    <property name="plugin-10" type="string" value="genmon"/>''',
         9: '''    <property name="plugin-9" type="string" value="separator">
       <property name="expand" type="bool" value="false"/>
       <property name="style" type="uint" value="0"/>
@@ -147,8 +148,8 @@ def panel_xml(d):
         used = [1, 2, 3, 4, 5, 6, 7, 8]
         pids = [1, 2]
     else:
-        panels = [panel(1, "p=8;x=0;y=0", 100, 44, 28, d["bar"], [1, 9, 8, 2, 5, 6, 3, 7])]
-        used = [1, 2, 3, 5, 6, 7, 8, 9]
+        panels = [panel(1, "p=8;x=0;y=0", 100, 44, 28, d["bar"], [1, 9, 8, 2, 10, 5, 6, 3, 7])]
+        used = [1, 2, 3, 5, 6, 7, 8, 9, 10]
         pids = [1]
     ids = "\n".join(f'    <value type="int" value="{i}"/>' for i in pids)
     dark = str((d.get("bar") or d["top"])["dark"]).lower()
@@ -166,6 +167,9 @@ def panel_xml(d):
 </channel>
 '''
 
+
+# Keyboard indicator (xfce4-genmon-plugin): سنڌي / Roman Sindhi / English
+GENMON_RC = "Command=sindhos-keyboard-label\nUseLabel=0\nText=\nUpdatePeriod=2000\nFont=Inter Semi-Bold 10\n"
 
 DOCKLIKE_RC = "[user]\npinned=" + ";".join(APPS + a + ".desktop" for a in PINNED) + ";\n" + \
     "forceIconSize=true\niconSize=30\n" \

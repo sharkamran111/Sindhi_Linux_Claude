@@ -10,4 +10,6 @@ for engine in "$@"; do
   if [ -n "$found" ]; then next=$engine; break; fi
   [ "$engine" = "$current" ] && found=1
 done
-exec ibus engine "$next"
+ibus engine "$next"
+# update the taskbar keyboard indicator right away
+xfce4-panel --plugin-event=genmon-10:refresh:bool:true >/dev/null 2>&1 || true

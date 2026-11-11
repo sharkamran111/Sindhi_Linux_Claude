@@ -1,0 +1,5 @@
+Command=sindhos-keyboard-label
+UseLabel=0
+Text=
+UpdatePeriod=2000
+Font=Inter Semi-Bold 10

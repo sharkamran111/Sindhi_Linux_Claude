@@ -9,6 +9,7 @@ engines-order=['xkb:us::eng', 'sindhos-roman', 'sindhos-sindhi']
 triggers=['<Alt>Shift_L', '<Shift>Alt_L']
 
 [org.freedesktop.ibus.panel]
-show-icon-on-systray=true
+# the taskbar shows SindhOS's own keyboard indicator instead (sindhos-keyboard-label)
+show-icon-on-systray=false
 use-custom-font=true
 custom-font='Lateef 17'
