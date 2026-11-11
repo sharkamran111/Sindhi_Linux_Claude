@@ -143,6 +143,16 @@ more build):
   cream tile, bottom-left like the Windows Start button; boot menu, splash,
   About and installer keep the ajrak emblem
 
+**Phase 1 final test (build of 2026-11-11 17:34, QEMU 2 GB and 4 GB): all
+passed.** Idle RAM 592 MB at 2 GB (target under 600 MB, 8 MB to spare;
+668 MB at 4 GB, where the kernel's own tables grow with RAM). Ctrl+Space
+cycles English → Roman Sindhi → Sindhi in the real build (typed سنڌي ٻولي سنڌي,
+bytes checked); taskbar label سنڌي / Roman Sindhi / English; keyboard menu
+closes on an outside click; IBus emoji helper off; time zone PKT; topi menu
+button bottom-left. If more memory headroom is wanted: Thunar's background
+daemon (7 MB), IBus XIM bridge for old X11 apps (10 MB), light-locker (6 MB,
+replaced in Phase 2).
+
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,
   `PRETTY_NAME="SindhOS 0.2"`, `ID=sindhos`, `ID_LIKE=debian`, keep
