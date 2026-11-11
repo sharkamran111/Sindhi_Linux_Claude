@@ -1,0 +1,3 @@
+#!/bin/sh
+# Start the SindhOS Roman Sindhi IBus engine
+exec python3 /usr/lib/sindhos/roman/engine.py "$@"

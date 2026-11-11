@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SindhOS Roman Sindhi input method (installed in /usr/share/ibus/component) -->
+<component>
+  <name>org.sindhos.Roman</name>
+  <description>SindhOS Roman Sindhi input method</description>
+  <exec>/usr/lib/sindhos/roman/ibus-engine-sindhos-roman --ibus</exec>
+  <version>0.1</version>
+  <author>SindhOS project</author>
+  <license>See /usr/share/doc/sindhos</license>
+  <homepage>https://github.com/sharkamran111/Sindhi_Linux_Claude</homepage>
+  <textdomain>sindhos</textdomain>
+  <engines>
+    <engine>
+      <name>sindhos-roman</name>
+      <language>sd</language>
+      <license>See /usr/share/doc/sindhos</license>
+      <author>SindhOS project</author>
+      <icon>/usr/share/sindhos/roman/roman-icon.svg</icon>
+      <layout>us</layout>
+      <longname>Roman Sindhi · رومن سنڌي</longname>
+      <description>Type Sindhi in Roman letters: sindhi boli → سنڌي ٻولي</description>
+      <rank>80</rank>
+      <symbol>سن</symbol>
+    </engine>
+  </engines>
+</component>

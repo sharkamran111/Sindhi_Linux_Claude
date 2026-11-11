@@ -1,11 +1,13 @@
-# SindhOS: English + Roman Sindhi, quick switch with Ctrl+Space or Alt+Shift (like macOS)
+# SindhOS keyboards: English, Roman Sindhi (type sindhi -> سنڌي, with
+# suggestions) and Sindhi key by key. Switch with Ctrl+Space or Alt+Shift.
 [org.freedesktop.ibus.general]
-preload-engines=['xkb:us::eng', 'm17n:sd:roman-sindhi']
-engines-order=['xkb:us::eng', 'm17n:sd:roman-sindhi']
+preload-engines=['xkb:us::eng', 'sindhos-roman', 'm17n:sd:roman-sindhi']
+engines-order=['xkb:us::eng', 'sindhos-roman', 'm17n:sd:roman-sindhi']
 
 [org.freedesktop.ibus.general.hotkey]
 triggers=['<Control>space', '<Alt>Shift_L', '<Shift>Alt_L']
 
 [org.freedesktop.ibus.panel]
 show-icon-on-systray=true
-
+use-custom-font=true
+custom-font='Lateef 17'

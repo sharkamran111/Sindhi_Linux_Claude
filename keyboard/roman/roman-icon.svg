@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<!-- SindhOS Roman Sindhi input method: Latin letters become Sindhi -->
+<rect width="64" height="64" rx="12" fill="#1F2A5A"/>
+<text x="16" y="27" font-family="DejaVu Sans" font-weight="bold" font-size="20" fill="#C9B98F" text-anchor="middle">a</text>
+<text x="38" y="50" font-family="Lateef" font-weight="bold" font-size="38" fill="#F6F1E7" text-anchor="middle" direction="rtl">سن</text>
+<rect x="6" y="56" width="52" height="3" rx="1.5" fill="#9B1B1E"/>
+</svg>

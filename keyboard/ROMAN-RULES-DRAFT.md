@@ -1,5 +1,8 @@
 # Roman Sindhi spelling rules — DRAFT for review
 
+> The engine is built on these draft rules; the table that is actually used
+> is `keyboard/roman/rules.py`. Corrections here go into that file.
+
 These rules drive the new Gboard-style engine (Phase 1). They are used two
 ways:
 

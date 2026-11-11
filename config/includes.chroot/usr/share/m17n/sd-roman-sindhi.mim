@@ -3,9 +3,9 @@
 
 (input-method sd roman-sindhi)
 
-(description "Roman Sindhi: type Sindhi letters on an English keyboard")
+(description "Sindhi key by key: each key on an English keyboard types one Sindhi letter")
 
-(title "سنڌي")
+(title "س")
 
 (map
  (trans

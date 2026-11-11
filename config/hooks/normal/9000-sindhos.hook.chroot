@@ -63,7 +63,10 @@ done
 # 6. User picture (menu header, login) for new users, including the live user
 cp /usr/share/pixmaps/sindhos.png /etc/skel/.face
 
-# 7. Keyboard defaults (IBus settings)
+# 7. Keyboards: Roman Sindhi word index, IBus defaults
+python3 /usr/lib/sindhos/roman/translit.py build \
+  /usr/share/sindhos/roman/sd-words.tsv /usr/share/sindhos/roman/index.sqlite
+rm -rf /usr/lib/sindhos/roman/__pycache__
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
 # 8. Super+Space opens app search. Insert before the Alt+F2 shortcut.

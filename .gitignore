@@ -20,6 +20,9 @@ config/includes.chroot/usr/share/icons/
 config/includes.chroot/usr/share/backgrounds/
 config/includes.chroot/usr/share/plymouth/themes/sindhos/splash.png
 config/includes.chroot/etc/calamares/branding/sindhos/*.png
+config/includes.chroot/usr/lib/sindhos/
+config/includes.chroot/usr/share/sindhos/roman/
+config/includes.chroot/usr/share/ibus/
 out/
 shots/
 # Firmware copied from cache/ by build.sh at build time

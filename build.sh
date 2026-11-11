@@ -91,6 +91,17 @@ cp branding/logo.svg "$ICONS/sindhos.svg"
 cp branding/topi/topi-small.svg "$ICONS/sindhos-menu.svg"
 cp branding/topi/topi.svg "$ICONS/sindhos-topi.svg"
 
+# Roman Sindhi input method (keyboard/roman): engine, word list, IBus component.
+# The lookup index is built inside the image by hook 9000-sindhos.
+ROMAN_LIB="$INC/usr/lib/sindhos/roman"
+ROMAN_SHARE="$INC/usr/share/sindhos/roman"
+rm -rf "$ROMAN_LIB" "$ROMAN_SHARE"
+mkdir -p "$ROMAN_LIB" "$ROMAN_SHARE" "$INC/usr/share/ibus/component"
+cp keyboard/roman/rules.py keyboard/roman/translit.py keyboard/roman/composer.py \
+   keyboard/roman/engine.py keyboard/roman/ibus-engine-sindhos-roman "$ROMAN_LIB/"
+cp keyboard/roman/data/sd-words.tsv keyboard/roman/roman-icon.svg "$ROMAN_SHARE/"
+cp keyboard/roman/sindhos-roman.xml "$INC/usr/share/ibus/component/"
+
 # Artwork rendered from SVG: wallpaper (desktop + login), boot splash, installer
 mkdir -p "$INC/usr/share/backgrounds/sindhos"
 svg branding/wallpaper.svg 1920 1080 "$INC/usr/share/backgrounds/sindhos/wallpaper.png"

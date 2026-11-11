@@ -97,12 +97,17 @@ root through it. Fine on a personal build PC; skip the flag on a shared one.
 ## Phase 1 · Branding: SindhOS everywhere
 
 **Status (2026-11-11):** design direction **C "Sindh Taskbar"** chosen and
-built. SindhOS rename and design C tested in QEMU (build of 2026-11-11):
-boot menu, splash, login screen, About (SindhOS 0.2), installer branding,
-menu, taskbar dock all OK. Idle RAM (measured at 1 GB): **539 MB used, 427 MB available**
-(Phase 0: 619 / 347), mainly from dropping Plank. Still to do in Phase 1: the
-Roman Sindhi transliteration engine (waiting for your answers in
-`keyboard/ROMAN-RULES-DRAFT.md`).
+built. SindhOS rename and design C tested in QEMU: boot menu, splash, login
+screen, About (SindhOS 0.2), installer branding, menu, taskbar dock all OK.
+Idle RAM 539 MB (target under 600 MB).
+
+Roman Sindhi engine: **written and tested live in the ISO** (injected into a
+running session): `sindhi boli asaan jee sunyaaNap aahe.` → سنڌي ٻولي اسان جي
+سڃاڻپ آهي۔ with a numbered candidate list, choices remembered, about 35 MB RAM.
+Word list: 62,048 words from Sindhi Wikipedia (CC BY-SA 4.0). Spelling rules
+are still the draft in `keyboard/roman/rules.py`, waiting for your
+corrections (`keyboard/ROMAN-RULES-DRAFT.md`). Next: build, test Ctrl+Space
+across the three keyboards, update the keyboard guide.
 
 **Name**
 - `/etc/os-release` and `/usr/lib/os-release`: `NAME="SindhOS"`,
