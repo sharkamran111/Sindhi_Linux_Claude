@@ -1,0 +1,2 @@
+/* Used when an app or panel asks for the dark variant (e.g. a dark panel) */
+@import url("../../SindhOS-Dark/gtk-3.0/gtk.css");

@@ -1,0 +1,26 @@
+/* SindhOS Dark: adw-gtk3-dark with indigo-tinted surfaces and ajrak red. */
+@import url("../../adw-gtk3-dark/gtk-3.0/gtk.css");
+
+@define-color accent_bg_color #B3262A;
+@define-color accent_color #E86A6C;
+@define-color accent_fg_color #FFFFFF;
+
+@define-color window_bg_color #191B26;
+@define-color window_fg_color #ECECF1;
+@define-color view_bg_color #14161F;
+@define-color view_fg_color #ECECF1;
+@define-color headerbar_bg_color #212435;
+@define-color headerbar_fg_color #ECECF1;
+@define-color headerbar_backdrop_color #191B26;
+@define-color sidebar_bg_color #1D2030;
+@define-color sidebar_backdrop_color #1A1C29;
+@define-color dialog_bg_color #1E2130;
+@define-color card_bg_color #222536;
+@define-color popover_bg_color #23263A;
+
+/* Panels: adw-gtk3 makes them black/white (GNOME style); SindhOS panels
+   follow the theme. A dark panel on the light theme uses gtk-dark.css. */
+@define-color panel_bg_color #141621;
+@define-color panel_fg_color #ECECF1;
+.xfce4-panel { font-weight: 500; }
+.xfce4-panel.background { border-radius: 12px; }

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=SindhOS Dark
+Comment=SindhOS dark theme: adw-gtk3 with ajrak accents
+
+[X-GNOME-Metatheme]
+GtkTheme=SindhOS-Dark
+MetacityTheme=SindhOS-Dark
+IconTheme=Papirus-Dark

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=SindhOS Light
+Comment=SindhOS light theme: adw-gtk3 with ajrak accents
+
+[X-GNOME-Metatheme]
+GtkTheme=SindhOS-Light
+MetacityTheme=SindhOS-Light
+IconTheme=Papirus

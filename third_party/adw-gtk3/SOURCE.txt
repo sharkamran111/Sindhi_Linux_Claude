@@ -1,0 +1,7 @@
+adw-gtk3 v6.5 — the libadwaita look for GTK3 apps
+Source:  https://github.com/lassekongo83/adw-gtk3/releases/tag/v6.5
+File:    adw-gtk3v6.5.tar.xz (unchanged release tarball)
+SHA256:  a81780fadfc432be0fc3d89c4ebb41aa28e4f032d42c36f9789c57dd10cfa41c
+Licence: LGPL-2.1 (see COPYING)
+Used as the base of the SindhOS GTK themes (branding/theme/gtk), which only
+override its named colours.

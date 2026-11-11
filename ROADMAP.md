@@ -118,19 +118,72 @@ root through it. Fine on a personal build PC; skip the flag on a shared one.
 - Used for the Whisker menu button, the `sindhos` icon (About screen, installer)
   and the Plymouth/boot logo where it fits
 
-**Ajrak theme accents**
+**Look and feel: SindhOS's own identity (replaces the Mac-style look)**
+
+Your feedback after Phase 0: the WhiteSur look reads as a cheap macOS copy.
+Goal: clean, modern, premium, recognisably SindhOS.
+- Window buttons **top right**, in the order minimize, maximize, close, drawn
+  as **– □ ×**. Our own xfwm4 window theme, original artwork
+- GTK theme: **adw-gtk3** (LGPL, the modern GNOME look ported to GTK3, made
+  for recolouring) as the base, with a small SindhOS layer on top: ajrak
+  palette, Inter + Lateef fonts, rounded corners, quiet shadows. WhiteSur is
+  removed
+- Dock: Plank is replaced by an **xfce4-panel dock with the docklike plugin**
+  (Debian package): one less program, no `bamfdaemon`, about 25 MB less RAM,
+  styled by the same theme
+- Ajrak colours as accents only (selection, focus, active indicators, menu
+  button, thin ajrak band where it fits), never whole surfaces of pattern
+- **Before applying: 2–3 design directions with real screenshots.** They are
+  previewed on the running ISO in QEMU (themes copied in over the network from
+  this PC), so the screenshots show the real system, not drawings. You pick
+  one, then it becomes the default in the ISO
 - Palette: deep red `#9B1B1E`, indigo `#1F2A5A`, black `#141414`,
-  white/cream `#F6F1E7` (final values set in Phase 1 and recorded in
-  `branding/palette.md`)
-- WhiteSur ships as prebuilt tarballs. At build time, swap its blue accent
-  for ajrak red (selection, buttons, switches, focus ring) and indigo
-  (top bar, headers). No sass toolchain needed
-- Same palette in: greeter, Plymouth, boot menu, Plank theme, Whisker menu,
-  terminal colour scheme, Papirus folder colour (closest to red)
+  white/cream `#F6F1E7`, recorded in `branding/palette.md`, used for greeter,
+  Plymouth, boot menu, panel, menu, terminal colours
+
+**Keyboard: Roman Sindhi transliteration (Gboard-style)**
+
+Your feedback: type `sindhi boli` in English letters, get سنڌي ٻولي, with a
+choice when a Roman spelling matches more than one Sindhi word. Keep the
+current key-by-key layout as a second option.
+
+What's realistic: Gboard uses large language models trained on huge amounts
+of text. We can't match that offline on a 1 GB PC, but a **rules + word list**
+engine gets common words right and offers candidates for the rest:
+1. Each Roman word is looked up in an index of Sindhi words by their possible
+   Roman spellings (`sindhi` → سنڌي, سنڌي ۽ …; `boli` → ٻولي, بولي), ranked by
+   how common the word is
+2. Words not in the list fall back to letter rules (`dh` → ڌ, `bb` → ٻ …), so
+   you can always type anything, including names
+3. Your choices are remembered, so the word you pick moves to the top
+4. Space or punctuation commits the first candidate; number keys or arrows
+   pick another one
+
+Engine: **our own small IBus engine in Python** (`ibus-sindhos-roman`, about
+25–35 MB RAM while in use). Why not the ready-made ones:
+- `ibus-typing-booster` suggests words that start with what was already
+  converted. It can't search "all Sindhi words whose Roman spelling is `boli`",
+  which is the core of this feature
+- `ibus-table` can map a Roman key to words, but has no letter-rule fallback
+  for words that aren't in its table
+
+Quality depends on the Roman spelling rules (you offered to help with
+ڌ ٻ ڄ ڃ ڳ ڱ ڪ) and on the word list. Phase 1 starts with a draft rule table
+for you to correct and a starter word list; Phase 4 grows the same word list
+for spell checking and suggestions.
+
+Switching: Ctrl+Space between **English / Roman Sindhi / Sindhi (key-by-key)**.
+IBus's own Ctrl+Space toggles between the last two methods on a quick tap and
+steps through all of them while Ctrl is held; whether that feels right gets
+tested, otherwise a small switcher cycles the three in fixed order. The
+top-bar indicator shows EN / سنڌي / س.
 
 **Test checklist (to hand over):** boot menu says SindhOS · splash · login screen
-· About dialog · `cat /etc/os-release` · topi in the start button · red/indigo
-accents in a settings dialog · installer shows SindhOS.
+· About dialog · `cat /etc/os-release` · topi in the start button · window
+buttons – □ × top right · new dock · ajrak accents in a settings dialog ·
+installer shows SindhOS · `sindhi boli` → سنڌي ٻولي with candidates · Ctrl+Space
+through English / Roman Sindhi / Sindhi · idle RAM at 1 GB not higher than
+Phase 0 (619 MB).
 
 ---
 
@@ -213,14 +266,10 @@ CREDITS.md entries match the files.
 ## Phase 4 · Sindhi typing
 
 **Keyboards**
-- Standard Sindhi layout (XKB `pk(snd)` or the m17n Sindhi map; whichever one
-  matches what Sindhi typists know, to confirm with you) plus the **Roman
-  Sindhi** layout
-- Roman Sindhi: `keyboard/layout.py` already holds a full layout from v0.1.
-  If you send a newer one, it replaces that file and the generator rebuilds
-  the input method and the keyboard guide
-- Quick switch: keep Ctrl+Space (cycles English → Sindhi → Roman Sindhi)
-  and the top-bar indicator
+- Roman Sindhi transliteration and the key-by-key layout come in Phase 1
+  (see there). Phase 4 adds the standard Sindhi layout (XKB `pk(snd)` or
+  the m17n Sindhi map, whichever Sindhi typists know, to confirm with you)
+  and grows the shared word list
 
 **Word suggestions**
 - `ibus-typing-booster` (in Debian). It can run the m17n Roman Sindhi and
@@ -328,7 +377,7 @@ RAM with Firefox + Writer open at 1 GB and 2 GB.
 | When | Question |
 |---|---|
 | Phase 0 | OK to add the one sudoers line for the build wrapper (or use another build option)? |
-| Phase 1 | Keep live user `sindhi`? Version number for this release (suggest 0.2)? |
+| Phase 1 | Keep live user `sindhi`? Version number (suggest 0.2)? Pick a design direction. Correct the draft Roman spelling rules |
 | Phase 2 | xsecurelock-based lock screen as recommended, or also try a custom login greeter? |
 | Phase 3 | Pick the default ajrak design from the preview sheet |
 | Phase 4 | Is `keyboard/layout.py` your Roman Sindhi layout, or will you send a new one? Which standard Sindhi layout do you use? |
