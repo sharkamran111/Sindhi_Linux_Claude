@@ -29,15 +29,16 @@ TATWEEL = "ـ"
 
 # ------------------------------------------------------------- Sindhi side
 
+def normalise_letters(word):
+    """Normalise look-alike Urdu/Arabic letters and drop tatweel; keep vowel
+    marks (the written form, e.g. ڀاءُ لاءِ)."""
+    return "".join(rules.NORMALISE.get(ch, ch) for ch in word if ch != TATWEEL)
+
+
 def normalise(word):
-    """Normalise look-alike Urdu/Arabic letters, drop tatweel and vowel marks."""
-    out = []
-    for ch in word:
-        ch = rules.NORMALISE.get(ch, ch)
-        if ch == TATWEEL or ch in rules.MARKS:
-            continue
-        out.append(ch)
-    return "".join(out)
+    """normalise_letters() and also drop vowel marks: the form used to group
+    spellings of one word (ڀاءُ and ڀاء are the same word)."""
+    return "".join(ch for ch in normalise_letters(word) if ch not in rules.MARKS)
 
 
 def sd_key(word):
@@ -148,12 +149,15 @@ def _tokens(s):
 def roman_keys(s):
     """Class keys for Roman input. 'ng' is read both as ن+گ and as ڱ."""
     variants = {s}
-    if "ng" in s:
-        variants.add(s.replace("ng", "N"))
+    # ambiguous pairs, read both ways: ng = ڱ or ن+گ, nj/ny = ڃ or ن+ج/ن+ي
+    for pair, one in (("ng", "\x01"), ("nj", "\x02"), ("ny", "\x02")):
+        for v in list(variants):
+            if pair in v:
+                variants.add(v.replace(pair, one))
     keys = set()
     for v in variants:
         classes = []
-        for _tok, cls in _tokens(v):
+        for _tok, cls in _tokens(v.replace("\x01", "N").replace("\x02", "N")):
             if cls and (not classes or classes[-1] != cls):
                 classes.append(cls)
         keys.add(".".join(classes))
@@ -190,11 +194,119 @@ def fallback(s):
     return "".join(out)
 
 
-def similarity(typed, word_roman):
-    """0..1: how close the typed Roman is to a word's comparison form."""
-    strict = difflib.SequenceMatcher(None, roman_form(typed), word_roman).ratio()
-    loose = difflib.SequenceMatcher(None, roman_form(typed, long_a=True), word_roman).ratio()
-    return max(strict, 0.97 * loose)
+# ---- vowel-tolerant matching ----------------------------------------------
+# WhatsApp-style Roman Sindhi doesn't mark vowel length reliably: "kaam" can be
+# ڪم, "asan" is اسان. Typed letters are aligned with the Sindhi word; vowels
+# may be written or not at a small cost, consonants must agree. Word-initial
+# and final vowels cost more to leave out: Sindhi always writes those.
+
+_VOWELS = [("aa", "A", True), ("ee", "I", True), ("oo", "O", True), ("ai", "I", True), ("au", "O", True),
+           ("a", "A", False), ("e", "I", True), ("i", "I", False), ("o", "O", True), ("u", "O", False),
+           ("y", "I", True), ("w", "O", True)]
+_WORD_VOWEL = {"ا": "A", "آ": "A", "أ": "A", "إ": "I", "ي": "I", "ى": "I", "ی": "I", "ئ": "I", "ے": "I",
+               "و": "O", "ؤ": "O", "ع": "E", "ء": "E", "۽": "I"}
+_MARK_VOWEL = {"\u064e": "A", "\u0650": "I", "\u064f": "O"}
+
+
+def typed_seq(typed):
+    """[(kind, value, long)] kind C = consonant class, V = vowel."""
+    s = clean(typed).replace("'", "")
+    out, i = [], 0
+    while i < len(s):
+        for v, kind, long_ in _VOWELS:
+            if s.startswith(v, i) and s[i].lower() in "aeiouyw":
+                out.append(("V", kind, long_))
+                i += len(v)
+                break
+        else:
+            for tok, cls in rules.ROMAN_TOKENS:
+                if cls and s.startswith(tok, i):
+                    if not (out and out[-1][:2] == ("C", cls)):        # doubled letter
+                        out.append(("C", cls, tok.lower()))
+                    i += len(tok)
+                    break
+            else:
+                i += 1
+    return out
+
+
+def word_seq(word):
+    out, prev = [], ""
+    for ch in word:
+        if ch in ("ه", "ھ") and prev in rules.ASPIRATE_AFTER and out:
+            out[-1] = ("C", rules.ASPIRATE_AFTER[prev], prev + "ه")
+        elif ch in rules.LETTERS:
+            cls = rules.LETTERS[ch][0]
+            if not (out and out[-1][:2] == ("C", cls)):
+                out.append(("C", cls, ch))
+        elif ch in _WORD_VOWEL:
+            out.append(("V", _WORD_VOWEL[ch], True))
+        elif ch in _MARK_VOWEL:
+            out.append(("V", _MARK_VOWEL[ch], False))        # written mark: optional
+        prev = ch
+    return out
+
+
+def match_cost(typed, word):
+    """Alignment cost between typed Roman and a Sindhi word (0 = perfect)."""
+    t, w = typed_seq(typed), word_seq(word)
+    n, m = len(t), len(w)
+
+    def drop_typed(i):           # typed vowel/consonant with nothing in the word
+        kind, _v, long_ = t[i]
+        long_ = bool(long_)
+        if kind == "C":
+            return 1.5
+        if i == 0:
+            return 1.0
+        if i == n - 1:
+            return 0.9
+        return 0.35 if long_ else 0.0       # short a/i/u: often not written
+
+    def drop_word(j):            # word letter that wasn't typed
+        kind, v, written = w[j]
+        if kind == "C":
+            return 1.5
+        if not written:
+            return 0.05
+        if v == "E":
+            return 0.15
+        if j == 0:
+            return 1.0
+        if j == m - 1:
+            return 0.9
+        return 0.35
+
+    def pair(i, j):
+        a, b = t[i], w[j]
+        if a[0] != b[0]:
+            return 9.0
+        if a[0] == "C":
+            if a[1] != b[1]:
+                return 1.2
+            spellings = [x.lower() for x in rules.LETTERS.get(b[2], ("", [a[2]]))[1]]
+            return 0.0 if a[2] in spellings else 0.25     # e.g. typed k for ق: possible, q is better
+        if a[1] == b[1]:
+            return 0.0
+        if b[1] == "E":
+            return 0.3                      # ع / ء for a typed vowel: possible, not free
+        return 0.5
+
+    INF = 1e9
+    d = [[INF] * (m + 1) for _ in range(n + 1)]
+    d[0][0] = 0.0
+    for i in range(n + 1):
+        for j in range(m + 1):
+            c = d[i][j]
+            if c >= INF:
+                continue
+            if i < n and j < m:
+                d[i + 1][j + 1] = min(d[i + 1][j + 1], c + pair(i, j))
+            if i < n:
+                d[i + 1][j] = min(d[i + 1][j], c + drop_typed(i))
+            if j < m:
+                d[i][j + 1] = min(d[i][j + 1], c + drop_word(j))
+    return d[n][m]
 
 
 # ------------------------------------------------------------------ index
@@ -203,10 +315,19 @@ def similarity(typed, word_roman):
 SCHEMA = """
 CREATE TABLE words (word TEXT PRIMARY KEY, key TEXT NOT NULL, roman TEXT NOT NULL, freq INTEGER NOT NULL);
 CREATE INDEX words_key ON words(key);
+CREATE TABLE aliases (roman TEXT NOT NULL, word TEXT NOT NULL);
+CREATE INDEX aliases_roman ON aliases(roman);
 """
 
 
-def build(tsv, db):
+EVERYDAY_FREQ = 20000     # an everyday word ranks like a very common word
+
+
+def build(tsv, db, everyday=None):
+    """Index the word list. Words in the everyday list (data/everyday.tsv)
+    get at least EVERYDAY_FREQ, and are added if Wikipedia doesn't have them."""
+    if everyday is None:
+        everyday = os.path.join(os.path.dirname(os.path.abspath(tsv)), "everyday.tsv")
     if os.path.exists(db):
         os.remove(db)
     con = sqlite3.connect(db)
@@ -217,16 +338,40 @@ def build(tsv, db):
             if not line.strip() or line.startswith("#"):
                 continue
             word, _, freq = line.rstrip("\n").partition("\t")
-            word = normalise(word.strip())
-            if not word:
+            word = normalise_letters(word.strip())       # keep vowel marks: ڀاءُ
+            if not normalise(word):
                 continue
             rows[word] = rows.get(word, 0) + int(freq or 1)
+    aliases = []
+    if everyday and os.path.exists(everyday):
+        bare = {normalise(w): w for w in rows}
+        with open(everyday, encoding="utf-8") as f:
+            for line in f:
+                if not line.strip() or line.startswith("#"):
+                    continue
+                cols = line.rstrip("\n").split("\t")
+                word = normalise_letters(cols[0].strip())
+                word = bare.get(normalise(word), word)        # the word list's written form
+                rows[word] = max(rows.get(word, 0), EVERYDAY_FREQ)
+                for roman in cols[1:2]:
+                    if roman.strip():
+                        aliases.append((roman_norm(roman.strip()), word))
     con.executemany("INSERT INTO words VALUES (?,?,?,?)",
                     ((w, sd_key(w), sd_roman(w), fq) for w, fq in rows.items()))
+    con.executemany("INSERT INTO aliases VALUES (?,?)", aliases)
     con.commit()
     con.execute("VACUUM")
     con.close()
     return len(rows)
+
+
+COST_WEIGHT = 3.0      # how much a spelling mismatch counts ...
+FREQ_WEIGHT = 0.5      # ... against how common the word is (per x10)
+LOW = -1.0             # below this a dictionary word is a poor match
+
+
+def score(typed, word, freq):
+    return -COST_WEIGHT * match_cost(typed, word) + FREQ_WEIGHT * math.log10(freq + 1)
 
 
 class Index:
@@ -259,26 +404,29 @@ class Index:
         if self.con:
             keys = roman_keys(typed)
             for key in keys:
-                for word, roman, freq in self.con.execute(
-                        "SELECT word, roman, freq FROM words WHERE key=? ORDER BY freq DESC LIMIT 200", (key,)):
-                    s = 5.0 * similarity(typed, roman) + 0.35 * math.log10(freq + 1)
-                    scored[word] = max(scored.get(word, -9), s)
+                for word, freq in self.con.execute(
+                        "SELECT word, freq FROM words WHERE key=? ORDER BY freq DESC LIMIT 300", (key,)):
+                    s = score(typed, word, freq)
+                    scored[word] = max(scored.get(word, -99), s)
                 if prefix and key:
-                    for word, roman, freq in self.con.execute(
-                            "SELECT word, roman, freq FROM words WHERE key>? AND key<? ORDER BY freq DESC LIMIT 30",
+                    for word, freq in self.con.execute(
+                            "SELECT word, freq FROM words WHERE key>? AND key<? ORDER BY freq DESC LIMIT 30",
                             (key + ".", key + "/")):   # "/" sorts right after "."
-                        sim = similarity(typed, roman)
-                        if sim >= 0.75:                 # only close completions
-                            scored.setdefault(word, 3.0 * sim + 0.35 * math.log10(freq + 1) - 1.0)
+                        s = score(typed, word, freq) - 1.0      # completions: below exact matches
+                        if s > LOW:
+                            scored.setdefault(word, s)
         for i, word in enumerate(rules.SPECIAL.get(clean(typed), [])):
-            scored[word] = max(scored.get(word, -9), 6.0 - i)
+            scored[word] = max(scored.get(word, -99), 9.0 - i)
+        if self.con:                         # everyday list: exact Roman spelling
+            for (word,) in self.con.execute("SELECT word FROM aliases WHERE roman=?", (roman_norm(typed),)):
+                scored[word] = max(scored.get(word, -99), 10.0)
         for word, n in self._user_counts(typed).items():
             scored[word] = scored.get(word, 0) + 1.0 + 0.8 * n
         fb = fallback(typed)
         ranked = sorted(scored, key=lambda w: -scored[w])[:limit]
         if fb and fb not in ranked:
             # the letter-by-letter spelling: first if nothing matched well
-            if not ranked or scored[ranked[0]] < 4.0:
+            if not ranked or scored[ranked[0]] < LOW:
                 ranked.insert(0, fb)
             else:
                 ranked.append(fb)

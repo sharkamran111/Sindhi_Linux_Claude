@@ -100,7 +100,8 @@ rm -rf "$ROMAN_LIB" "$ROMAN_SHARE"
 mkdir -p "$ROMAN_LIB" "$ROMAN_SHARE" "$INC/usr/share/ibus/component"
 cp keyboard/roman/rules.py keyboard/roman/translit.py keyboard/roman/composer.py \
    keyboard/roman/engine.py keyboard/roman/ibus-engine-sindhos-roman keyboard/layout.py "$ROMAN_LIB/"
-cp keyboard/roman/data/sd-words.tsv keyboard/roman/roman-icon.svg keyboard/roman/sindhi-icon.svg "$ROMAN_SHARE/"
+cp keyboard/roman/data/sd-words.tsv keyboard/roman/data/everyday.tsv \
+   keyboard/roman/roman-icon.svg keyboard/roman/sindhi-icon.svg "$ROMAN_SHARE/"
 cp keyboard/roman/sindhos-roman.xml "$INC/usr/share/ibus/component/"
 
 # Artwork rendered from SVG: wallpaper (desktop + login), boot splash, installer

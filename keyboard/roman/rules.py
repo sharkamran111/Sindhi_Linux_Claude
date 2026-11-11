@@ -27,7 +27,7 @@ LETTERS = {
     "ڄ": ("j", ["jj", "j"]),          # implosive j
     "ڃ": ("n", ["ny", "nj", "n"]),
     "چ": ("ch", ["ch", "c"]),
-    "ڇ": ("chh", ["chh"]),
+    "ڇ": ("ch", ["chh", "ch"]),        # people type ch for both چ and ڇ
     "ح": ("h", ["h"]),
     "خ": ("kh", ["kh", "x"]),
     "د": ("d", ["d"]),
@@ -84,9 +84,9 @@ NORMALISE = {"ك": "ڪ", "ی": "ي", "ى": "ي", "ہ": "ه", "ۀ": "ه", "ە": "
 
 # Roman tokens, longest first: token -> sound class ("" = vowel, ignored in key)
 ROMAN_TOKENS = [
-    ("chh", "chh"), ("tth", "th"), ("Th", "th"), ("Dh", "dh"),
+    ("chh", "ch"), ("tth", "th"), ("Th", "th"), ("Dh", "dh"),
     ("ch", "ch"), ("kh", "kh"), ("gh", "gh"), ("jh", "jh"), ("bh", "bh"), ("th", "th"),
-    ("dh", "dh"), ("ph", "ph"), ("sh", "sh"), ("zh", "zh"), ("ny", "n"), ("nj", "n"),
+    ("dh", "dh"), ("ph", "ph"), ("sh", "sh"), ("zh", "zh"),
     ("b", "b"), ("p", "p"), ("t", "t"), ("T", "t"), ("s", "s"), ("j", "j"), ("c", "ch"),
     ("h", "h"), ("x", "kh"), ("d", "d"), ("D", "d"), ("z", "z"), ("r", "r"), ("R", "r"),
     ("f", "f"), ("q", "k"), ("k", "k"), ("g", "g"), ("l", "l"), ("m", "m"), ("n", "n"),

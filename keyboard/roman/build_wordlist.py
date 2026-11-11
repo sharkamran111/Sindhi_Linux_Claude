@@ -7,6 +7,8 @@ Reads the Sindhi Wikipedia articles (CC BY-SA 4.0), strips wiki markup,
 keeps words written in the Sindhi alphabet, normalises Urdu/Arabic look-alike
 letters (ك ی ہ -> ڪ ي ه) and drops words with Urdu-only letters (ٹ ڈ ڑ ے ں).
 A word must appear at least MIN_FREQ times in at least MIN_PAGES articles.
+Spellings that differ only in vowel marks count as one word, written in its
+most common form (so ڀاءُ keeps its pesh if that is how it is usually written).
 The same list feeds the Roman Sindhi keyboard now, and spell checking and
 the dictionary app later.
 """
@@ -72,6 +74,7 @@ def pages(path):
 def main(src, out):
     freq = collections.Counter()
     docs = collections.Counter()
+    forms = collections.defaultdict(collections.Counter)   # bare word -> written forms
     n = 0
     for text in pages(src):
         n += 1
@@ -83,6 +86,7 @@ def main(src, out):
             if len(w) < 1 or not translit.sd_key(w) and w not in ("۽", "آ", "اي", "او"):
                 continue
             freq[w] += 1
+            forms[w][translit.normalise_letters(raw)] += 1
             seen.add(w)
         docs.update(seen)
         if n % 5000 == 0:
@@ -95,7 +99,7 @@ def main(src, out):
                 "# Source text: Sindhi Wikipedia (sd.wikipedia.org), CC BY-SA 4.0\n"
                 f"# {n} articles, {len(words)} words (min {MIN_FREQ} uses in {MIN_PAGES}+ articles)\n")
         for w, c in words:
-            f.write(f"{w}\t{c}\n")
+            f.write(f"{forms[w].most_common(1)[0][0]}\t{c}\n")
     print(f"{n} articles -> {len(words)} words -> {out}")
 
 

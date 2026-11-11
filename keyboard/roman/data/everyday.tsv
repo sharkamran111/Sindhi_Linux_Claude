@@ -1,0 +1,26 @@
+# Everyday Sindhi words that should win over Wikipedia's formal words when
+# a typed spelling fits both (e.g. haal -> حال, not هال). One word per line,
+# optional TAB + a Roman spelling: typing exactly that spelling gives this
+# word first (useful for loanwords like table -> ٽيبل).
+# Seeded with the maintainer's WhatsApp-style examples (2026-11-11).
+ڪم	kaam
+ڪامران	kamran
+ڌن	dhan
+ڀاءُ	bhaa
+اسان	asan
+تنهنجي	tunhinji
+حال	haal
+ڇا	cha
+ٻڪري	bakri
+گهر	ghar
+رستو	rasto
+ڪتاب	kitab
+نشان	nishan
+ٽيبل	table
+ميز	meez
+پاڻي	pani
+روٽي	roti
+ماني	mani
+دوست	dost
+سج	sij
+دروازو	darwazo

@@ -114,7 +114,13 @@ opaque taskbar, time zone Asia/Karachi (live, installed, installer), one
 keyboard indicator (the "Sindhi" label was the log-out button showing the
 user name; now a single icon), keyboards named "Roman Sindhi" and "Sindhi"
 (both served by the SindhOS engine; ibus-m17n removed), topi menu button on
-a cream tile at 28 px, wallpaper medallion above the taskbar. Next: build,
+a cream tile at 28 px, wallpaper medallion above the taskbar.
+
+Roman Sindhi tuned for WhatsApp-style typing (plain letters, unreliable vowel
+length): vowel-tolerant matching, ch = چ/ڇ, nj read both ways, written forms
+kept (ڀاءُ). Your 21 examples are test cases (`keyboard/roman/test_examples.py`):
+17 come out first from the rules alone, all 21 with the everyday-words list
+(`keyboard/roman/data/everyday.tsv`); 35 common words also first. Next: build,
 test Ctrl+Space across the three keyboards.
 
 **Name**
@@ -335,25 +341,130 @@ Firefox, Mousepad · autocorrect fixes `ك`→`ڪ` · idle RAM still under 600 M
 
 ---
 
-## Phase 5 · Sindhi dictionary app (لغت)
+## Phase 5 · Education (تعليم): four apps in the topi menu
 
-- Small offline app, Python + GTK3, about 30 MB RAM, starts in under 1 second
-- Search in Sindhi or English, as-you-type results, shows meaning(s), part of
-  speech when known, and related forms
-- **UI in Sindhi, right to left** (GTK RTL direction), English labels as an
-  option; ajrak-accented, Naskh font
-- Data: SQLite (`/usr/share/sindhos/dictionary.db`) built from the **same word
-  list as the spell checker**, plus meanings from freely licensed sources
-  (Wiktionary is CC-BY-SA; other sources only if the licence allows)
-- Honest limit: the spell-check list will have far more words than there are
-  free meanings for. Words without a meaning still show as "known word,
-  no meaning yet", and the app can take user-added meanings (stored
-  locally)
-- Right-click "Look up" from selected text (via `xdg` / a keyboard shortcut)
-  if it stays simple
+*Plan only (2026-11-11), not started. Replaces the earlier "dictionary app"
+phase; the dictionary is now app 5a.*
 
-**Test checklist:** search Sindhi and English · RTL layout · words with/without
-meanings · startup time and RAM · user-added meaning survives reboot (installed).
+An **Education** section in the topi menu with four apps:
+
+| App | Sindhi name | What it does |
+|---|---|---|
+| Sindhi Dictionary | سنڌي لغت | search in Sindhi, Roman Sindhi or English, show meanings |
+| Learning Library | علمي ڪتبخانو | starts with Shah Jo Risalo: browse by Sur, read, search |
+| Sindhi Exercise Book | سنڌي مشق ڪتاب | alphabet with sounds, letter shapes, words, quizzes, progress |
+| Sindhi Grammar | سنڌي گرامر | lessons on nouns, gender, plurals, verbs, tenses, with exercises |
+
+(The Sindhi names are my drafts; please correct them.)
+
+### Shared rules and technology
+
+- **Offline, light, one toolkit:** each app is a small Python + GTK3 program
+  (Python, PyGObject and GTK3 are already in the image), about 30–40 MB of
+  RAM while open and **nothing when closed**. Idle desktop stays under
+  600 MB. No web engine, no Electron
+- **Look:** the SindhOS theme, Lateef / Scheherazade for Sindhi text,
+  right-to-left layout in Sindhi mode, ajrak-red accents
+- **Language:** Sindhi interface by default, English as an option (one
+  setting shared by all four apps)
+- **Data:** read-only SQLite files in `/usr/share/sindhos/education/`; your
+  progress and notes in `~/.local/share/sindhos/`
+- **Audio:** small Ogg Opus files, played with PipeWire (`pw-play`), which is
+  already installed. About 10–15 KB per sound
+- **Menu:** apps carry `Categories=Education;` and a SindhOS sub-menu, so they
+  show up together under Education. The Sindhi Keyboard Guide moves there too
+
+### 5a · Sindhi Dictionary: what's realistic
+
+- **Search:** works immediately for all 62,000 words of the keyboard word
+  list, typed in Sindhi or Roman Sindhi (using the same engine as the
+  keyboard: `pani` finds پاڻي)
+- **Meanings are the hard part.** The word list has no meanings. Freely
+  licensed sources:
+  - Wiktionary: only **1,735 Sindhi entries** (CC BY-SA). Good start, small
+  - **Public-domain dictionaries, scanned on archive.org:** George Stack,
+    *Dictionary English and Sindhi* (1849) and *Sindhi and English* (1855);
+    George Shirt et al., *A Sindhi-English Dictionary* (1879). Large, but
+    19th-century English and some old spellings, and they're scans: turning
+    them into text needs OCR plus proof-reading, a long project. Plan: do it
+    letter by letter, the most common words first
+  - Your own meanings: the app lets you add or correct a meaning; these can
+    be collected into the next release
+- **Honest expectation for version 1:** every word findable, English meanings
+  for a few thousand common words, growing over time
+
+### 5b · Learning Library: Shah Jo Risalo
+
+- **Source I'd use:** Ernest Trumpp's edition, *The Diwan of Abd-ul-Latif
+  Shah, known by the name of Shaha jo Risalo* (Leipzig, 1866). Public domain
+  (published 1866, Trumpp died 1885), scanned on archive.org
+  (`the-diwan-of-abd-ul-latif-shah-known-by-the-name-of-shaha-jo-risalo`)
+- **Caveats:** it's the first printed edition and scholars consider it
+  incomplete, with some readings later corrected. The better scholarly
+  edition is Hotchand Gurbakhshani's (1923–1931; he died 1947, so it's
+  public domain in Pakistan and India), but I found no scan of it on
+  archive.org. If you have or can find a scan of Gurbakhshani, I'd use that
+  instead. Later editions (Kalyan Advani 1958, Elsa Kazi's translations,
+  Agha, Qazi) are still under copyright
+- **How the text gets in:** there's no clean digital public-domain text. Plan:
+  one Sur at a time, I prepare the text from the scan (OCR for Sindhi Naskh is
+  weak, so expect manual work), you proof-read against the scan, then it
+  goes in. Nothing typed from memory
+- **App:** list of Surs, verses in large Naskh RTL, search (Sindhi or Roman
+  Sindhi), bookmarks, font size. Translations only from public-domain or
+  your own sources
+- **First release:** one or two short Surs, fully proof-read, rather than
+  everything half-checked
+
+### 5c · Sindhi Exercise Book: what's realistic
+
+- **Alphabet:** all 52 letters, tap to hear the sound, its name, and its
+  shapes (isolated, initial, medial, final, drawn by the font itself, so no
+  artwork needed), with an example word
+- **Simple words** with picture-free cards (word, Roman spelling, meaning,
+  sound), then **small quizzes** (hear and pick the letter, match shapes,
+  build a word) and **progress** per lesson, saved locally
+- **Audio:**
+  - Best: **your recordings.** 52 letters + about 200 starter words. I'll add a
+    small recording helper: it shows each item, you press a key, it records,
+    trims silence and saves Ogg Opus. Roughly 1–2 hours of your time. Total
+    size about 4 MB
+  - Fallback: eSpeak NG has a Sindhi voice (offline, free) but sounds
+    robotic. OK for testing, not good for learners
+- **Content needed from you:** the recordings, a check of the letter names in
+  Sindhi, the example word per letter, the starter word list
+
+### 5d · Sindhi Grammar: what's realistic
+
+- I can build the lesson app and the exercise types (fill the gap, choose
+  the right form, make the plural), but **the grammar content has to come
+  from you or be checked by you.** I won't write Sindhi grammar rules from
+  memory as fact
+- Public-domain reference: Ernest Trumpp, *Grammar of the Sindhi Language*
+  (1872), scanned on archive.org. Scholarly and in English, useful for
+  checking, not as lesson text
+- **Content needed from you:** for each lesson (nouns, gender, plurals,
+  verbs, tenses), a short explanation, 5–10 examples and the exercise
+  answers. I can draft the structure and examples for you to correct
+
+### Order and small phases
+
+| Step | What | Needs from you |
+|---|---|---|
+| **5a.1** (build first) | Dictionary: search in Sindhi/Roman/English, Wiktionary meanings, add-your-own meanings | nothing to start |
+| 5c.1 | Exercise Book: alphabet with sounds and shapes, progress | 52 recordings, letter names check |
+| 5b.1 | Library app + first Sur (proof-read) | proof-reading; a Gurbakhshani scan if available |
+| 5c.2 | Exercise Book: words and quizzes | ~200 word recordings |
+| 5d.1 | Grammar: nouns and gender lessons | lesson content / corrections |
+| 5a.2, 5b.2, 5d.2 … | more meanings (from Stack/Shirt), more Surs, more grammar | proof-reading |
+
+Why the dictionary first: it can be useful on day one without new content,
+reuses the word list and Roman engine already built, and its "add a meaning"
+feature starts collecting the data the other apps need.
+
+**Test checklist (per step):** works with networking off · Sindhi and English
+interface · RTL text and Naskh font correct · sounds play · progress
+survives a reboot (installed system) · idle RAM unchanged, app RAM under 50 MB.
 
 ---
 
@@ -401,4 +512,5 @@ RAM with Firefox + Writer open at 2 GB and 4 GB.
 | Phase 2 | xsecurelock-based lock screen as recommended, or also try a custom login greeter? |
 | Phase 3 | Pick the default ajrak design from the preview sheet |
 | Phase 4 | Is `keyboard/layout.py` your Roman Sindhi layout, or will you send a new one? Which standard Sindhi layout do you use? |
+| Phase 5 | Correct the Sindhi app names; a Gurbakhshani scan if you have one; recordings (52 letters first) |
 | Phase 6 | Firefox ESR (recommended) vs. a different browser |
